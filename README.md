@@ -1,6 +1,4 @@
-# animal3D-SDK-202309FA-Animation
-
-**Team 3: Undersea Noises**
+# Team 3: Undersea Noises
 
 Aster Nie
 
