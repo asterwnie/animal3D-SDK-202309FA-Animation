@@ -163,8 +163,6 @@ void a3starter_load(a3_DemoState const* demoState, a3_DemoMode0_Starter* demoMod
 	demoMode->targetIndex[starter_passScene] = starter_scene_finalcolor;
 
 	demoMode->targetCount[starter_passScene] = starter_target_scene_max;
-<<<<<<< Updated upstream
-=======
 	demoMode->targetCount[starter_passComposite] = 1;
 
 
@@ -174,7 +172,7 @@ void a3starter_load(a3_DemoState const* demoState, a3_DemoMode0_Starter* demoMod
 	a3clipPoolCreate(&demoMode->clipPool, 1);
 	// init individual clips here
 	a3clipControllerInit(&demoMode->clipCtrl, "testCtrl", &demoMode->clipPool, 0);
->>>>>>> Stashed changes
+
 }
 
 
