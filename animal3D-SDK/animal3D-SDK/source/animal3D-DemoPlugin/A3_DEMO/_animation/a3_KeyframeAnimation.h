@@ -58,6 +58,9 @@ struct a3_Keyframe
 {
 	// index in keyframe pool
 	a3ui32 index;
+
+	//data
+	a3ui32 data;
 };
 
 // pool of keyframe descriptors
