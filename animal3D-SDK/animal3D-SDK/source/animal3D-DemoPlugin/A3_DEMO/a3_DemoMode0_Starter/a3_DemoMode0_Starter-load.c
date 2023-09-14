@@ -161,16 +161,23 @@ void a3starter_load(a3_DemoState const* demoState, a3_DemoMode0_Starter* demoMod
 	demoMode->pass = starter_passScene;
 
 	demoMode->targetIndex[starter_passScene] = starter_scene_finalcolor;
+	//demoMode->targetIndex[starter_passComposite] = starter_scene_finalcolor;
 
 	demoMode->targetCount[starter_passScene] = starter_target_scene_max;
-	demoMode->targetCount[starter_passComposite] = 1;
+	//demoMode->targetCount[starter_passComposite] = 1;
 
 
-	// SET UP ASSIGNMENT STUFF!!
-	a3keyframePoolCreate(&demoMode->keyPool, 4);
-	// init individual keyframes here
-	a3clipPoolCreate(&demoMode->clipPool, 1);
-	// init individual clips here
+	//setup assignment stuff
+	a3KeyframePoolCreate(&demoMode->keyPool, 4); //4 keyframes
+
+	//initialize individual keyframes here
+
+
+	a3ClipPoolCreate(&demoMode->clipPool, 1);
+
+	//initialize individual clips here
+	a3clipInit(&demoMode->clipPool.clip[0], "test", &demoMode->keyPool, 0, 1);
+
 	a3clipControllerInit(&demoMode->clipCtrl, "testCtrl", &demoMode->clipPool, 0);
 
 }

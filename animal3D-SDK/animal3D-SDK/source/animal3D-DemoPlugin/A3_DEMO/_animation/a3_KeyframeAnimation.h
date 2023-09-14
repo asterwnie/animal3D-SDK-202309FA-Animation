@@ -59,8 +59,14 @@ struct a3_Keyframe
 	// index in keyframe pool
 	a3ui32 index;
 
+	//duration
+	a3real duration;
+
+	//inverse duration
+	a3real invDuration;
+
 	//data
-	a3ui32 data;
+	a3ui32 keyData;
 };
 
 // pool of keyframe descriptors
@@ -95,6 +101,18 @@ struct a3_Clip
 
 	// index in clip pool
 	a3ui32 index;
+
+	a3real duration;
+
+	a3real invDuration;
+
+	a3ui32 keyframeCount;
+
+	a3ui32 first;
+
+	a3ui32 last;
+
+	a3_KeyframePool* pool;
 };
 
 // group of clips
