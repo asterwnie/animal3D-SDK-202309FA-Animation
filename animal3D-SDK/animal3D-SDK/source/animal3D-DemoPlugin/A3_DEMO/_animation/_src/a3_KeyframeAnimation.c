@@ -42,6 +42,7 @@ a3i32 a3keyframePoolCreate(a3_KeyframePool* keyframePool_out, const a3ui32 count
 	{
 		return -1;
 	}
+	keyframePool_out->count = count;
 	return 1;
 }
 
