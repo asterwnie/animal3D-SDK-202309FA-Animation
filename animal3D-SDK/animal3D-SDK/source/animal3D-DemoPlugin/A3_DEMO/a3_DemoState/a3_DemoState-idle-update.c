@@ -133,6 +133,7 @@ void a3demo_update_pointLight(a3_DemoSceneObject* obj_camera, a3_DemoPointLight*
 
 void a3demo_update(a3_DemoState *demoState, a3f64 const dt)
 {
+
 	demoState->demoModeCallbacksPtr->handleUpdate(demoState,
 		demoState->demoModeCallbacksPtr->demoMode, dt);
 }

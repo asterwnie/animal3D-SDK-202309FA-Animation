@@ -58,7 +58,7 @@ a3i32 a3keyframePoolRelease(a3_KeyframePool* keyframePool)
 a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x)
 {
 	keyframe_out->duration = duration;
-	keyframe_out->invDuration = 1.0 / duration;
+	keyframe_out->invDuration = 1.0f / duration;
 	keyframe_out->keyData = value_x;
 
 	return 1;
@@ -89,7 +89,7 @@ a3i32 a3clipPoolRelease(a3_ClipPool* clipPool)
 a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_nameLenMax], const a3_KeyframePool* keyframePool, const a3ui32 firstKeyframeIndex, const a3ui32 finalKeyframeIndex)
 {
 	
-	copy(begin(clipName), end(clipName), begin(clip_out->name));
+	memcpy(clip_out->name, clipName, a3keyframeAnimation_nameLenMax);
 	clip_out->first = firstKeyframeIndex;
 	clip_out->last = finalKeyframeIndex;
 	clip_out->pool = keyframePool;

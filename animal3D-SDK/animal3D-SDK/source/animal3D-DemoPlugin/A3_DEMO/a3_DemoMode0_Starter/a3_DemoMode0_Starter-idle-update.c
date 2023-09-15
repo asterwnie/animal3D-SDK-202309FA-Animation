@@ -36,6 +36,9 @@
 #include "../_a3_demo_utilities/a3_DemoMacros.h"
 
 
+#include "./A3_DEMO/_animation/a3_KeyframeAnimationController.h"
+
+#include <stdio.h>
 //-----------------------------------------------------------------------------
 // UPDATE
 
@@ -85,7 +88,7 @@ void a3starter_update(a3_DemoState* demoState, a3_DemoMode0_Starter* demoMode, a
 	}
 
 	// UPDATE ASSIGNMENT STUFF!!!
-	a3ClipControllerUpdate(&demoMode->clipCtrl, dt);
+	a3clipControllerUpdate(&demoMode->clipCtrl, dt);
 
 	// print to console here
 	printf("Clip Controller Info ======================");

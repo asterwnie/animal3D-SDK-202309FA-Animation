@@ -36,7 +36,7 @@ a3i32 a3clipControllerInit(a3_ClipController* clipCtrl_out, const a3byte ctrlNam
 	if (!clipPool) return -1;
 
 	//setting the controller's name
-	copy(begin(ctrlName), end(ctrlName), begin(clipCtrl_out->name));
+	memcpy(clipCtrl_out->name, ctrlName, a3keyframeAnimation_nameLenMax);
 	//setting the clip pool being controlled
 	clipCtrl_out->clipPool = clipPool;
 	//setting the index of the clip currently accessed

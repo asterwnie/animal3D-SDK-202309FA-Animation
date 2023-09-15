@@ -70,7 +70,7 @@ struct a3_ClipController
 	a3ui32 playback;
 
 	//clip pool being controlled
-	a3_ClipPool* clipPool;
+	const a3_ClipPool* clipPool;
 };
 
 

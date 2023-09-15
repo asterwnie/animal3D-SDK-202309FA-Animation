@@ -173,9 +173,6 @@
     <ClInclude Include="..\..\..\source\animal3D-DemoPlugin\_a3_dylib_config_export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\animal3D-DemoPlugin\A3_DEMO\a3_DemoMode0_Starter.h">
-      <Filter>Header Files\A3_DEMO</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\animal3D-DemoPlugin\A3_DEMO\_animation\a3_Hierarchy.h">
       <Filter>Header Files\A3_DEMO\_animation</Filter>
     </ClInclude>
@@ -196,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\animal3D-DemoPlugin\A3_DEMO\_animation\a3_SpatialPose.h">
       <Filter>Header Files\A3_DEMO\_animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\animal3D-DemoPlugin\A3_DEMO\a3_DemoMode0_Starter.h">
+      <Filter>Header Files\A3_DEMO</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
