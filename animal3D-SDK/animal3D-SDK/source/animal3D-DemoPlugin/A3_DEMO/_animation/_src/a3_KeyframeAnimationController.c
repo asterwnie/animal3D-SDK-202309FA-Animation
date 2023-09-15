@@ -41,7 +41,7 @@ a3i32 a3clipControllerInit(a3_ClipController* clipCtrl_out, const a3byte ctrlNam
 
 
 	//setting the clip pool being controlled
-	clipCtrl_out->_clipPool = clipPool;
+	*clipCtrl_out->_clipPool = *clipPool;
 	//setting the index of the clip currently accessed
 	clipCtrl_out->clip = clipIndex_pool;
 	//should be starting with the first keyframe

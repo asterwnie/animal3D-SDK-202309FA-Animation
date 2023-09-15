@@ -94,7 +94,7 @@ a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_na
 	
 	clip_out->first = firstKeyframeIndex;
 	clip_out->last = finalKeyframeIndex;
-	clip_out->pool = keyframePool; 
+	*clip_out->pool = *keyframePool; 
 
 
 	//goes through each keyframe in the pool and finds the total duration
