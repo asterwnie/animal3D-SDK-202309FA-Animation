@@ -50,11 +50,12 @@ Date:   9/14/2023
 // allocate keyframe pool
 a3i32 a3keyframePoolCreate(a3_KeyframePool* keyframePool_out, const a3ui32 count)
 {
-	keyframePool_out = (a3_KeyframePool*)malloc(count * sizeof(a3_KeyframePool));
-	if (keyframePool_out == NULL)
-	{
-		return -1;
-	}
+	keyframePool_out = (a3_KeyframePool*)malloc(sizeof(a3_KeyframePool));
+	if (!keyframePool_out) return -1;
+
+	keyframePool_out->keyframe = malloc(count * sizeof(a3_Keyframe));
+	if (!keyframePool_out->keyframe) return -1;
+
 	keyframePool_out->count = count;
 	return 0;
 }
