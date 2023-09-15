@@ -35,6 +35,8 @@
 
 #include "../_a3_demo_utilities/a3_DemoMacros.h"
 
+#include "./A3_DEMO/_animation/a3_KeyframeAnimationController.h"
+
 
 #include "./A3_DEMO/_animation/a3_KeyframeAnimationController.h"
 
@@ -88,10 +90,10 @@ void a3starter_update(a3_DemoState* demoState, a3_DemoMode0_Starter* demoMode, a
 	}
 
 	// UPDATE ASSIGNMENT STUFF!!!
-	a3clipControllerUpdate(&demoMode->clipCtrl, dt);
+	a3clipControllerUpdate(&demoMode->clipCtrl, (a3real)dt);
 
 	// print to console here
-	printf("Clip Controller Info ======================");
+	/*printf("Clip Controller Info ======================");
 
 	printf("Current Clip Index: %i/n", (&demoMode->clipCtrl)->clip);
 	printf("Clip Time: %i/n", (&demoMode->clipCtrl)->clipTime);
@@ -100,7 +102,7 @@ void a3starter_update(a3_DemoState* demoState, a3_DemoMode0_Starter* demoMode, a
 	printf("Current Keyframe Index: %i/n" + (&demoMode->clipCtrl)->keyframe);
 	printf("Keyframe Time: %i/n", (&demoMode->clipCtrl)->keyframeTime);
 	printf("Normalized Keyframe Time: %i/n", (&demoMode->clipCtrl)->keyframeParameter);
-	
+	*/
 }
 
 

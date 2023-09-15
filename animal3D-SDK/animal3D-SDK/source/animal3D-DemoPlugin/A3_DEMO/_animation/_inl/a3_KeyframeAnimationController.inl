@@ -104,6 +104,8 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 	clipCtrl->keyframeParameter = clipCtrl->keyframeTime / currKeyframe->duration;
 
 	// extra (above and beyond: call some event when this happens, do terminus actions, etc.
+
+	return 0;
 }
 
 // set clip to play
@@ -112,8 +114,10 @@ inline a3i32 a3clipControllerSetClip(a3_ClipController* clipCtrl, const a3_ClipP
 	if(!clipCtrl) return -1;
 	if (!clipPool) return -1;
 
-	clipCtrl->clipPool = clipPool;
+	//clipCtrl->clipPool = clipPool;
 	clipCtrl->clip = clipIndex_pool;
+
+	return 0;
 }
 
 
