@@ -60,7 +60,7 @@ struct a3_Keyframe
 	a3ui32 index;
 
 	//duration
-	a3real duration;
+	a3real keyframeDuration;
 
 	//inverse duration
 	a3real invDuration;

@@ -506,13 +506,13 @@ void a3starter_render(a3_DemoState const* demoState, a3_DemoMode0_Starter const*
 			a3framebufferActivate(currentWriteFBO);
 			glDisable(GL_STENCIL_TEST);
 			glClear(GL_COLOR_BUFFER_BIT);
-		
+
 			// draw grid aligned to world
 			if (demoState->displayGrid)
 			{
 				a3demo_drawModelSolidColor(modelViewProjectionMat.m, viewProjectionMat.m, a3mat4_identity.m, demoState->prog_drawColorUnif, demoState->draw_grid, blue);
 			}
-		
+
 			if (demoState->displayTangentBases || demoState->displayWireframe)
 			{
 				const a3i32 flag[1] = { demoState->displayTangentBases * 3 + demoState->displayWireframe * 4 };
