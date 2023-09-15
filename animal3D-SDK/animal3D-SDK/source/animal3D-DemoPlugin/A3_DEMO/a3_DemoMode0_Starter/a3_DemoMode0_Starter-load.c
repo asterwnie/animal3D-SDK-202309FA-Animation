@@ -31,6 +31,7 @@
 #include "../a3_DemoMode0_Starter.h"
 
 #include "../a3_DemoState.h"
+#include "./A3_DEMO/_animation/a3_KeyframeAnimation.h"
 
 
 //-----------------------------------------------------------------------------
@@ -167,11 +168,13 @@ void a3starter_load(a3_DemoState const* demoState, a3_DemoMode0_Starter* demoMod
 	//demoMode->targetCount[starter_passComposite] = 1;
 
 
-	//setup assignment stuff
+	//setup assignment 1 stuff
+	printf("Initializing assignment stuff.");
+
 	a3KeyframePoolCreate(&demoMode->keyPool, 4); //4 keyframes
 
 	//initialize individual keyframes here
-
+	
 
 	a3ClipPoolCreate(&demoMode->clipPool, 1);
 

@@ -88,6 +88,16 @@ void a3starter_update(a3_DemoState* demoState, a3_DemoMode0_Starter* demoMode, a
 	a3ClipControllerUpdate(&demoMode->clipCtrl, dt);
 
 	// print to console here
+	printf("Clip Controller Info ======================");
+
+	printf("Current Clip Index: %i/n", (&demoMode->clipCtrl)->clip);
+	printf("Clip Time: %i/n", (&demoMode->clipCtrl)->clipTime);
+	printf("Normalized Clip Time: %i/n", (&demoMode->clipCtrl)->clipParameter);
+
+	printf("Current Keyframe Index: %i/n" + (&demoMode->clipCtrl)->keyframe);
+	printf("Keyframe Time: %i/n", (&demoMode->clipCtrl)->keyframeTime);
+	printf("Normalized Keyframe Time: %i/n", (&demoMode->clipCtrl)->keyframeParameter);
+	
 }
 
 
