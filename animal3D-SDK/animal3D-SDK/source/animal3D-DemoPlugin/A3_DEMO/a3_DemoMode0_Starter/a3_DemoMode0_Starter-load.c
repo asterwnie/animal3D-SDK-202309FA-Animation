@@ -169,14 +169,14 @@ void a3starter_load(a3_DemoState const* demoState, a3_DemoMode0_Starter* demoMod
 
 
 	//setup assignment 1 stuff
-	printf("Initializing assignment stuff.");
+	//printf("Initializing assignment stuff.");
 
-	a3KeyframePoolCreate(&demoMode->keyPool, 4); //4 keyframes
+	a3keyframePoolCreate(&demoMode->keyPool, 4); //4 keyframes
 
 	//initialize individual keyframes here
 	
 
-	a3ClipPoolCreate(&demoMode->clipPool, 1);
+	a3clipPoolCreate(&demoMode->clipPool, 1);
 
 	//initialize individual clips here
 	a3clipInit(&demoMode->clipPool.clip[0], "test", &demoMode->keyPool, 0, 1);

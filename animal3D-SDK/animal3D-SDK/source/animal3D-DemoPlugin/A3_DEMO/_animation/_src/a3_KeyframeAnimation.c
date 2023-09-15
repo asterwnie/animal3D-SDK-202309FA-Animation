@@ -22,7 +22,8 @@
 	Implementation of keyframe animation interfaces.
 */
 
-#include "../a3_KeyframeAnimation.h"
+//#include "../a3_KeyframeAnimation.h"
+#include "A3_DEMO/_animation/a3_KeyframeAnimation.h"
 
 #include <stdlib.h>
 #include <string.h>
