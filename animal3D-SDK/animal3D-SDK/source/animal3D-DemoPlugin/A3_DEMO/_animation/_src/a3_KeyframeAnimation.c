@@ -56,7 +56,7 @@ a3i32 a3keyframePoolCreate(a3_KeyframePool* keyframePool_out, const a3ui32 count
 		return -1;
 	}
 	keyframePool_out->count = count;
-	return 1;
+	return 0;
 }
 
 // release keyframe pool
@@ -64,17 +64,19 @@ a3i32 a3keyframePoolRelease(a3_KeyframePool* keyframePool)
 {
 	free(keyframePool);
 
-	return 1;
+	return 0;
 }
 
 // initialize keyframe
 a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x)
 {
+	if (!keyframe_out) return -1;
+
 	keyframe_out->keyframeDuration = duration;
 	keyframe_out->invDuration = 1.0f / duration;
 	keyframe_out->keyData = value_x;
 
-	return 1;
+	return 0;
 }
 
 
@@ -87,14 +89,14 @@ a3i32 a3clipPoolCreate(a3_ClipPool* clipPool_out, const a3ui32 count)
 		return -1;
 	}
 	clipPool_out->count = count;
-	return 1;
+	return 0;
 }
 
 // release clip pool
 a3i32 a3clipPoolRelease(a3_ClipPool* clipPool)
 {
 	free(clipPool);
-	return 1;
+	return 0;
 }
 
 
@@ -119,7 +121,7 @@ a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_na
 	clip_out->duration = sum;
 	clip_out->invDuration = 1 / clip_out->duration;
 
-	return 1;
+	return 0;
 }
 
 // get clip index from pool
