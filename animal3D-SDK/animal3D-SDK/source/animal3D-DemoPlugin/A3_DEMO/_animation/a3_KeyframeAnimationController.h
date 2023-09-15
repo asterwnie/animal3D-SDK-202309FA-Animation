@@ -23,6 +23,16 @@
 	limited in what one can do with this; could potentially be so much more.
 */
 
+/*
+=========================================
+File: a3_KeyframeAnimationController.h
+Purpose: Set up the Clip Controller data structure
+Author(s) and Contribution(s):
+-Tommy Wagner: Added member variables that will be used in its functions
+Date:   9/14/2023
+=========================================
+*/
+
 #ifndef __ANIMAL3D_KEYFRAMEANIMATIONCONTROLLER_H
 #define __ANIMAL3D_KEYFRAMEANIMATIONCONTROLLER_H
 

@@ -22,6 +22,18 @@
 	Implementation of keyframe animation interfaces.
 */
 
+/*
+=========================================
+File: a3_KeyframeAnimation.c
+Purpose: Establish the data structures of Keyframes, Keyframe Pools, Clips, and Clip Pools, and have constructors so they can be used elsewhere
+Author(s) and Contribution(s):
+-Tommy Wagner: Filled out the constructors, initializers, and destructors for the data structures
+-Aster Nie: Bug fixing
+Date:   9/14/2023
+=========================================
+*/
+
+
 //#include "../a3_KeyframeAnimation.h"
 #include "A3_DEMO/_animation/a3_KeyframeAnimation.h"
 

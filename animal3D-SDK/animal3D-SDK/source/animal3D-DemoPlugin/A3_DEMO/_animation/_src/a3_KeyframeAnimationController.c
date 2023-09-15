@@ -27,6 +27,17 @@
 #include <string.h>
 
 
+/*
+=========================================
+File: a3_KeyframeAnimationController.c
+Purpose: Add functionality to the Clip Controller
+Author(s) and Contribution(s):
+-Tommy Wagner: Gave functionality to the Clip Controller Initializer
+-Aster Nie: Bug fixing
+Date:   9/14/2023
+=========================================
+*/
+
 //-----------------------------------------------------------------------------
 
 // initialize clip controller

@@ -27,6 +27,16 @@
 #define __ANIMAL3D_KEYFRAMEANIMATIONCONTROLLER_INL
 
 
+/*
+=========================================
+File: a3_KeyframeAnimationController.inl
+Purpose: Give functionality to the Clip Controller's Update function
+Author(s) and Contribution(s):
+-Aster Nie: Gave functionalty to the clipControllerUpdate with all 7 options
+Date:   9/14/2023
+=========================================
+*/
+
 //-----------------------------------------------------------------------------
 
 // update clip controller

@@ -26,6 +26,17 @@
 	********************************************
 */
 
+/*
+=========================================
+File: a3_DemoMode0_Starter-Load.c
+Purpose: Add the code needed to start the program with our contributions to the existing loading algorithms
+Author(s) and Contribution(s):
+-Tommy Wagner: Added some initializing of data (Keyframes)
+-Aster Nie: Added initializers/constructors for objects
+Date:   9/14/2023
+=========================================
+*/
+
 //-----------------------------------------------------------------------------
 
 #include "../a3_DemoMode0_Starter.h"

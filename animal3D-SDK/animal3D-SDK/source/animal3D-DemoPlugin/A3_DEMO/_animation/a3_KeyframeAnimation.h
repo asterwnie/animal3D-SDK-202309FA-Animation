@@ -22,6 +22,17 @@
 	Data structures for fundamental keyframe animation.
 */
 
+/*
+=========================================
+File: a3_KeyframeAnimation.h
+Purpose: Establish the data structures of Keyframes, Keyframe Pools, Clips, and Clip Pools, and have constructors so they can be used elsewhere
+Author(s) and Contribution(s): 
+-Tommy Wagner: Added member variables to the data structures for what they will need
+Date:   9/14/2023
+=========================================
+*/
+
+
 #ifndef __ANIMAL3D_KEYFRAMEANIMATION_H
 #define __ANIMAL3D_KEYFRAMEANIMATION_H
 

@@ -26,6 +26,16 @@
 	********************************************
 */
 
+/*
+=========================================
+File: a3_DemoMode0_Starter-idle-update.c
+Purpose: Incorporate the Update function of the Clip Controller into the Update of the Demo Plugin
+Author(s) and Contribution(s):
+-Aster Nie: Added the ClipControllerUpdate function to the existing code
+Date:   9/14/2023
+=========================================
+*/
+
 //-----------------------------------------------------------------------------
 
 #include "../a3_DemoMode0_Starter.h"
