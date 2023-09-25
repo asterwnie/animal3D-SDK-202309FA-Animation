@@ -50,7 +50,7 @@ a3i32 a3clipControllerInit(a3_ClipController* clipCtrl_out, const a3byte ctrlNam
 		return -1;
 	}
 	//setting the controller's name
-	memcpy(clipCtrl_out->name, ctrlName, 10);
+	memcpy(clipCtrl_out->name, ctrlName, sizeof(clipCtrl_out->name));
 	
 
 
