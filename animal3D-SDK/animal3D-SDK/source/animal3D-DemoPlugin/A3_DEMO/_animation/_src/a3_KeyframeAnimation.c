@@ -89,11 +89,12 @@ a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3u
 // allocate clip pool
 a3i32 a3clipPoolCreate(a3_ClipPool* clipPool_out, const a3ui32 count)
 {
-	clipPool_out = (a3_ClipPool*)malloc(count * sizeof(a3_ClipPool));
-	if (clipPool_out == NULL)
-	{
-		return -1;
-	}
+	if (!clipPool_out) return -1;
+
+	clipPool_out->clip = malloc(count * sizeof(a3_Clip));
+
+	if (!clipPool_out->clip) return -1;
+
 	clipPool_out->count = count;
 	return 0;
 }
@@ -110,11 +111,14 @@ a3i32 a3clipPoolRelease(a3_ClipPool* clipPool)
 a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_nameLenMax], const a3_KeyframePool* keyframePool, const a3ui32 firstKeyframeIndex, const a3ui32 finalKeyframeIndex)
 {
 	
-	memcpy(clip_out->name, clipName, 10);
+	clip_out->name = clipName;
 	
 	clip_out->first = firstKeyframeIndex;
 	clip_out->last = finalKeyframeIndex;
-	*clip_out->pool = *keyframePool; 
+
+#pragma warning( disable : 4090)
+	//just testing without this warning, will remove later
+	clip_out->pool = keyframePool; 
 
 
 	//goes through each keyframe in the pool and finds the total duration

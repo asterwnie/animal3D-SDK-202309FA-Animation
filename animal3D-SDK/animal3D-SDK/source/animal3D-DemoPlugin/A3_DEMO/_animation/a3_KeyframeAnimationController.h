@@ -49,7 +49,8 @@ extern "C"
 typedef struct a3_ClipController			a3_ClipController;
 #endif	// __cplusplus
 
-
+#pragma warning( disable : 4090)
+//just testing without this warning, will remove later
 //-----------------------------------------------------------------------------
 
 // clip controller

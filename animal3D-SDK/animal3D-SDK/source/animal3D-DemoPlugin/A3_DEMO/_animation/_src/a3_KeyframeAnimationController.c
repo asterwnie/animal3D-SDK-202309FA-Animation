@@ -43,16 +43,23 @@ Date:   9/14/2023
 // initialize clip controller
 a3i32 a3clipControllerInit(a3_ClipController* clipCtrl_out, const a3byte ctrlName[a3keyframeAnimation_nameLenMax], const a3_ClipPool* clipPool, const a3ui32 clipIndex_pool)
 {
-	if (!clipCtrl_out) return -1;
-	if (!clipPool) return -1;
-
+	if (!clipCtrl_out) {
+		return -1;
+	}
+	if (!clipPool) {
+		return -1;
+	}
 	//setting the controller's name
 	memcpy(clipCtrl_out->name, ctrlName, 10);
 	
 
 
 	//setting the clip pool being controlled
-	*clipCtrl_out->_clipPool = *clipPool;
+#pragma warning( disable : 4090)
+//just testing without this warning, will remove later
+	clipCtrl_out->_clipPool = clipPool;
+
+
 	//setting the index of the clip currently accessed
 	clipCtrl_out->clip = clipIndex_pool;
 	//should be starting with the first keyframe
