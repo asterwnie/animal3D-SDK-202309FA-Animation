@@ -83,6 +83,11 @@ void a3starter_update(a3_DemoState* demoState, a3_DemoMode0_Starter* demoMode, a
 			activeCamera->projectionMat.m, activeCameraObject->modelMat.m, activeCameraObject->modelMatInv.m,
 			demoMode->object_scene[i].modelMat.m, a3mat4_identity.m);
 	}
+
+	// UPDATE ASSIGNMENT STUFF!!!
+	a3ClipControllerUpdate(&demoMode->clipCtrl, dt);
+
+	// print to console here
 }
 
 

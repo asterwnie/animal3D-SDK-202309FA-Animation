@@ -32,6 +32,23 @@
 // update clip controller
 inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt)
 {
+	// if (!clipCtrl !! !clipCtrl->init)
+	// return -1
+
+	//pre-resolve: step time
+	// resolve: 7 cases:
+	// while not resolved
+	//		1) stop: done
+	//		2) forward: while outside keyframe bounds (greater than or equal to end)
+	//			-> check exceeded keyframe
+	//				-> check exceeded clip
+	//		3) reverse: while outside keyframe bounds (less than begin)
+	//			-> check exceeded keyframe
+	//				-> check exceeded clip
+	// post-resolve: normalize
+
+	// extra (above and beyond: call some event when this happens, do terminus actions, etc.
+
 	return -1;
 }
 
