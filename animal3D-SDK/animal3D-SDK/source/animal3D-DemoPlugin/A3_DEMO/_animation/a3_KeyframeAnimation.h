@@ -81,7 +81,9 @@ struct a3_Keyframe
 	a3real invDuration;
 
 	//data
-	a3ui32 keyData;
+	//for project 1, will store the position and dimensions of the sprite
+	//x, y, width, height
+	a3ui32 keyData[4];
 };
 
 // pool of keyframe descriptors
@@ -177,6 +179,8 @@ a3i32 a3clipCalculateDuration(a3_Clip* clip);
 // calculate keyframes' durations by distributing clip's duration
 a3i32 a3clipDistributeDuration(a3_Clip* clip, const a3real newClipDuration);
 
+//read clips from a text file, create clip pool with them
+a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[1000], a3_KeyframePool* keyPool );
 
 //-----------------------------------------------------------------------------
 

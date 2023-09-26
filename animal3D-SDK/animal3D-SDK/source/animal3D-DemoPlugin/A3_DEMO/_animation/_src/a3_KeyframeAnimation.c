@@ -80,7 +80,7 @@ a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3u
 
 	keyframe_out->keyframeDuration = duration;
 	keyframe_out->invDuration = 1.0f / duration;
-	keyframe_out->keyData = value_x;
+	keyframe_out->keyData;
 
 	return 0;
 }
@@ -145,6 +145,46 @@ a3i32 a3clipGetIndexInPool(const a3_ClipPool* clipPool, const a3byte clipName[a3
 	}
 	return -1;
 }
+
+/*
+will read through the file, fill out keyframe pool with each cell (length * width or col * row)
+Will go through each line, creating a clip with the given duration, start, and end, from that keypool
+
+for now, ignore transitions and just get that part down
+
+file name: resource/tex/sprite/spriteTest8x8.png
+
+sprite sheet is 512x512
+Each sprite is 64x64
+So do position (64*clip, 64*keyframe), with width and height 64,64
+
+*/
+a3i32 a3clipPoolReader(a3_ClipPool* clipPool, a3byte clipFile[1000], a3_KeyframePool* keyPool)
+{
+	//creating the keyframe pool to hold each sprite
+	a3keyframePoolCreate(keyPool, 64); //64 keyframes, for the 8x8 sprite sheet
+
+	//going through each row and column, adding the sprite's location and dimensions
+	for (int col = 0; col < 8; col++)
+	{
+		for (int rows = 0; rows < 8; rows++)
+		{
+			a3ui32 spriteData[4] = {64*rows, 64*col, 64, 64};
+			a3keyframeInit(&keyPool->keyframe[col*8+rows], 1, spriteData); //will go left to right, top to bottom on sprite sheet
+		}
+	}
+
+
+
+
+
+
+
+
+}
+
+
+
 
 
 //-----------------------------------------------------------------------------
