@@ -74,7 +74,7 @@ a3i32 a3keyframePoolRelease(a3_KeyframePool* keyframePool)
 }
 
 // initialize keyframe
-a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x)
+a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x[4])
 {
 	if (!keyframe_out) return -1;
 
@@ -159,7 +159,7 @@ Each sprite is 64x64
 So do position (64*clip, 64*keyframe), with width and height 64,64
 
 */
-a3i32 a3clipPoolReader(a3_ClipPool* clipPool, a3byte clipFile[256], a3_KeyframePool* keyPool)
+a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[256], a3_KeyframePool* keyPool)
 {
 	//creating the keyframe pool to hold each sprite
 	a3keyframePoolCreate(keyPool, 64); //64 keyframes, for the 8x8 sprite sheet
@@ -176,7 +176,7 @@ a3i32 a3clipPoolReader(a3_ClipPool* clipPool, a3byte clipFile[256], a3_KeyframeP
 
 	int clipCount = 8;
 
-	a3clipPoolCreate(&clipPool, clipCount);//maybe a way to not hard-code this?
+	a3clipPoolCreate(clipPool, clipCount);//maybe a way to not hard-code this?
 
 	//opening the file with the clip descriptions (currently reading from the professor's file, make sure to change it
 	FILE* myFile = fopen(clipFile, "r");
@@ -205,7 +205,7 @@ a3i32 a3clipPoolReader(a3_ClipPool* clipPool, a3byte clipFile[256], a3_KeyframeP
 		sscanf(buffer, "%c %s %d %d %d", &ignore, &clipName, &clipDuration, &firstIndex, &lastIndex);
 
 		//initiating clip with the read values
-		a3clipInit(&clipPool[counter], clipName, &keyPool, firstIndex, lastIndex);
+		a3clipInit(&clipPool->clip[counter], clipName, keyPool, firstIndex, lastIndex);
 
 		//keeping track of how many clips have been put in the clip pool already
 		counter++;

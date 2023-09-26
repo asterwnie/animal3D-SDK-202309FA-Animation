@@ -104,7 +104,7 @@ a3i32 a3keyframePoolCreate(a3_KeyframePool* keyframePool_out, const a3ui32 count
 a3i32 a3keyframePoolRelease(a3_KeyframePool* keyframePool);
 
 // initialize keyframe
-a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x);
+a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x[4]);
 
 //-----------------------------------------------------------------------------
 
@@ -141,13 +141,16 @@ struct a3_ClipPool
 	a3ui32 count;
 };
 
+
+//ignoring for now
+
 //struct will handle what to do when the clip is finsihed
 
 /*
 the Loop and Pingpong should transition, which needs a currentKeyframe and a nextKeyframe, and will lerp between them
 
 -will call the a3ClipControllerInit with values of the nextClip
-*/
+
 struct TerminusHandler {
 	
 	//which terminus option (0 for stop, 1 for loop, 2 for pingpong)
@@ -159,7 +162,7 @@ struct TerminusHandler {
 
 
 };
-
+*/
 
 // allocate clip pool
 a3i32 a3clipPoolCreate(a3_ClipPool* clipPool_out, const a3ui32 count);

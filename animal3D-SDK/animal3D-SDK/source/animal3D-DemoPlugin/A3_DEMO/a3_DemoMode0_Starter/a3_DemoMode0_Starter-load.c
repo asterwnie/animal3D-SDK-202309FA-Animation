@@ -202,7 +202,7 @@ void a3starter_load(a3_DemoState const* demoState, a3_DemoMode0_Starter* demoMod
 	*/
 
 	//creating and initializing the keyframes and clips from the file
-	a3clipPoolReader(&demoMode->clipPool, "resource/animdata/sprite_anim.txt", &demoMode->keyPool);
+	a3clipPoolFileInit(&demoMode->clipPool, "resource/animdata/sprite_anim.txt", &demoMode->keyPool);
 
 
 	a3clipControllerInit(&demoMode->clipCtrl, "testCtrl", &demoMode->clipPool, 0);
