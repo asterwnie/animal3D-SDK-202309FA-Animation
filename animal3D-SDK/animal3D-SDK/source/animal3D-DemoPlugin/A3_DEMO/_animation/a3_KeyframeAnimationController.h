@@ -97,16 +97,8 @@ a3i32 a3clipControllerSetClip(a3_ClipController* clipCtrl, const a3_ClipPool* cl
 
 
 
-//stop the playback when it reaches the end (playback = 0)
-//a3i32 a3StopPlayback(a3_ClipController* clipCtrl);
-
-//loop playback when it reaches the end (set clipTime to 0 or 1)
-//a3i32 a3LoopPlayback(a3_ClipController* clipCtrl);
-
-//loop playback when it reaches the end (playback = playback * -1)
-//a3i32 a3PingPongPlayback(a3_ClipController* clipCtrl);
-
-
+//function that handles terminus actions
+a3i32 a3HandleTerminus(a3_ClipController* clipCtrl, a3_Clip* actionClip, a3byte terminus[a3keyframeAnimation_nameLenMax]);
 //-----------------------------------------------------------------------------
 
 

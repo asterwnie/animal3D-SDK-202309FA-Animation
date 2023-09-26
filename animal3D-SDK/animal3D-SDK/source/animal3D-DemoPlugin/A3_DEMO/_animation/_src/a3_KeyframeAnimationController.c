@@ -32,7 +32,7 @@
 File: a3_KeyframeAnimationController.c
 Purpose: Add functionality to the Clip Controller
 Author(s) and Contribution(s):
--Tommy Wagner: Gave functionality to the Clip Controller Initializer
+-Tommy Wagner: Gave functionality to the Clip Controller Initializer, created the terminus action handler
 -Aster Nie: Bug fixing
 Date:   9/14/2023
 =========================================
@@ -66,6 +66,31 @@ a3i32 a3clipControllerInit(a3_ClipController* clipCtrl_out, const a3byte ctrlNam
 	clipCtrl_out->playback = 1;
 
 	return 0;
+}
+
+//actionClip will either be currClip or the given clip in currClip->terminus, whether there is anything there or not
+a3i32 a3HandleTerminus(a3_ClipController* clipCtrl, a3_Clip* actionClip, a3byte terminus[a3keyframeAnimation_nameLenMax])
+{
+	if (terminus == "|") //pause at the terminus, setting the clipTime to 1 or 0 depending on playback
+	{
+		if (clipCtrl->playback == 1)
+		{
+			clipCtrl->clipTime = 1;
+		}
+		else if (clipCtrl->playback == -1)
+		{
+			clipCtrl->clipTime = 0;
+		}
+		clipCtrl->playback = 0;
+	}
+	else if (terminus == ">") //loop from the start (first frame indluced
+	{
+		clipCtrl->playback = 1;
+	}
+
+
+
+
 }
 
 
