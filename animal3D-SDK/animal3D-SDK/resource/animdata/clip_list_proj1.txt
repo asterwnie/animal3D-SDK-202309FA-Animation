@@ -1,0 +1,11 @@
+# Clip Pool Data 
+# @ clip_name	duration_s	first_frame	last_frame	
+@ 	row0		10.0			0			7
+@ 	row1		8.0			8			15
+@ 	row2		4.0			16			23
+@ 	row3		2.0			24			31
+@ 	row4		1.0			32			39
+@ 	row5		2.5			40			47
+@ 	row6_rev	0.5			55			48
+@ 	row7_rev	5.0			63			56
+@ 	all		8.0			0			63

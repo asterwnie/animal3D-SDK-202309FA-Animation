@@ -108,7 +108,7 @@ a3i32 a3clipPoolRelease(a3_ClipPool* clipPool)
 
 
 // initialize clip with first and last indices
-a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_nameLenMax], const a3_KeyframePool* keyframePool, const a3ui32 firstKeyframeIndex, const a3ui32 finalKeyframeIndex)
+a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_nameLenMax], const a3_KeyframePool* keyframePool, const a3ui32 clipDuration, const a3ui32 firstKeyframeIndex, const a3ui32 finalKeyframeIndex)
 {
 	
 	memcpy(clip_out->name, clipName, sizeof(clip_out->name));
@@ -120,6 +120,7 @@ a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_na
 
 
 	//goes through each keyframe in the pool and finds the total duration
+	/*
 	a3real sum = 0;
 	
 	for(a3ui32 i = clip_out->first; i <= clip_out->last; i++)
@@ -127,6 +128,8 @@ a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_na
 		sum += clip_out->pool->keyframe[i].keyframeDuration;
 	}
 	clip_out->duration = sum;
+	*/
+	clip_out->duration = clipDuration;
 	clip_out->invDuration = 1 / clip_out->duration;
 
 	return 0;
@@ -174,13 +177,30 @@ a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[256], a3_Keyfram
 		}
 	}
 
-	int clipCount = 8;
-
-	a3clipPoolCreate(clipPool, clipCount);//maybe a way to not hard-code this?
-
-	//opening the file with the clip descriptions (currently reading from the professor's file, make sure to change it
+	//the file that contains the clip information
 	FILE* myFile = fopen(clipFile, "r");
 
+	//the first character of the line, will be @ if it is one that should be read
+	a3byte check[1];
+
+	//the number of valid lines, or the number of clips in the pool
+	int clipCount = 0;
+
+	while (!feof(myFile))
+	{
+		fgets(check, 1, myFile); //read the first char into the buffer
+		if (check == '@')
+		{
+			clipCount++;
+		}
+	}
+
+	//resetting the file back to the start for the next pass
+	rewind(myFile);
+
+	//creation of the clip pool, with the clipCount we just found
+	a3clipPoolCreate(clipPool, clipCount);
+		
 	//the buffer that holds each line of the text file
 	a3byte buffer[256];
 
@@ -191,26 +211,30 @@ a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[256], a3_Keyfram
 	a3ui32 lastIndex;
 	a3byte ignore;
 
-	int counter = 0;
+	//keeping track of which clip is being added
+	a3ui32 counter = 0;
+	//going through each line of the file
 	while (!feof(myFile))
 	{
 		fgets(buffer, 256, myFile); //read a line into the buffer
-		if (buffer[0] != '@' || counter > clipCount) 
-			//making sure it is a valid line, and that the clipPool is not full
+		if (buffer[0] != '@') 
+			//making sure it is a valid line
 		{
 			continue;
 		}
 
 		//reading values into the variables (ignore is just to catch the @ symbol at the start of the line)
-		sscanf(buffer, "%c %s %d %d %d", &ignore, &clipName, &clipDuration, &firstIndex, &lastIndex);
+		if (!sscanf(buffer, "%c %s %d %d %d", &ignore, &clipName, &clipDuration, &firstIndex, &lastIndex))
+		{
+			//failed to read line
+		}
 
 		//initiating clip with the read values
-		a3clipInit(&clipPool->clip[counter], clipName, keyPool, firstIndex, lastIndex);
+		a3clipInit(&clipPool->clip[counter], clipName, keyPool, clipDuration, firstIndex, lastIndex);
 
 		//keeping track of how many clips have been put in the clip pool already
 		counter++;
 	}
-
 
 	fclose(myFile);
 }

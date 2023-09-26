@@ -116,6 +116,8 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 	printf("Sprite at: ( %d , %d ), with a width of %d and a height of %d", currKeyframe->keyData[0], currKeyframe->keyData[1],
 		currKeyframe->keyData[2], currKeyframe->keyData[3]);
 
+
+
 	// update the normalized clip value
 	clipCtrl->clipParameter = clipCtrl->clipTime / currClip->duration;
 	clipCtrl->keyframeParameter = clipCtrl->keyframeTime / currKeyframe->keyframeDuration;
