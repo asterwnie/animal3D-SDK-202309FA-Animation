@@ -40,7 +40,7 @@ Date:   9/14/2023
 #include "animal3D-A3DM/a3math/a3vector.h"
 #include "animal3D-A3DM/a3math/a3interpolation.h"
 
-
+#include <stdio.h>
 //-----------------------------------------------------------------------------
 
 #ifdef __cplusplus
@@ -180,7 +180,7 @@ a3i32 a3clipCalculateDuration(a3_Clip* clip);
 a3i32 a3clipDistributeDuration(a3_Clip* clip, const a3real newClipDuration);
 
 //read clips from a text file, create clip pool with them
-a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[1000], a3_KeyframePool* keyPool );
+a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[256], a3_KeyframePool* keyPool );
 
 //-----------------------------------------------------------------------------
 
