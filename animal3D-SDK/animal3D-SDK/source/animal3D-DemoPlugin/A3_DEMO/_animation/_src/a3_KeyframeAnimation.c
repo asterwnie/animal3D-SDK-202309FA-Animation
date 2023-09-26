@@ -116,8 +116,6 @@ a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_na
 	clip_out->first = firstKeyframeIndex;
 	clip_out->last = finalKeyframeIndex;
 
-#pragma warning( disable : 4090)
-	//just testing without this warning, will remove later
 	clip_out->pool = keyframePool; 
 
 

@@ -84,7 +84,6 @@ struct a3_ClipController
 	a3_ClipPool* _clipPool;
 };
 
-
 //-----------------------------------------------------------------------------
 
 // initialize clip controller
@@ -95,6 +94,17 @@ a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt);
 
 // set clip to play
 a3i32 a3clipControllerSetClip(a3_ClipController* clipCtrl, const a3_ClipPool* clipPool, const a3ui32 clipIndex_pool);
+
+
+
+//stop the playback when it reaches the end (playback = 0)
+a3i32 a3StopPlayback(a3_ClipController* clipCtrl);
+
+//loop playback when it reaches the end (set clipTime to 0 or 1)
+a3i32 a3LoopPlayback(a3_ClipController* clipCtrl);
+
+//loop playback when it reaches the end (playback = playback * -1)
+a3i32 a3PingPongPlayback(a3_ClipController* clipCtrl);
 
 
 //-----------------------------------------------------------------------------

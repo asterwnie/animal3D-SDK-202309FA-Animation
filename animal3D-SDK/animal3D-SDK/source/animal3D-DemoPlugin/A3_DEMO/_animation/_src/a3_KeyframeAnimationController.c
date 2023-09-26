@@ -55,8 +55,6 @@ a3i32 a3clipControllerInit(a3_ClipController* clipCtrl_out, const a3byte ctrlNam
 
 
 	//setting the clip pool being controlled
-#pragma warning( disable : 4090)
-//just testing without this warning, will remove later
 	clipCtrl_out->_clipPool = clipPool;
 
 

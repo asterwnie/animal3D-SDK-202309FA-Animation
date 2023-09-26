@@ -65,6 +65,9 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 		// if playhead is past this clip, perform a terminus action
 		if (clipCtrl->clip >= clipCtrl->_clipPool->count)
 		{
+			//read the terminus action from currClip
+
+
 			clipCtrl->clip = clipCtrl->_clipPool->count; // no loop (stop)
 			// loop...
 			// ping-pong...

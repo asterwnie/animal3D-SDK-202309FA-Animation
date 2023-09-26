@@ -61,6 +61,9 @@ typedef struct a3_ClipPool					a3_ClipPool;
 enum
 {
 	a3keyframeAnimation_nameLenMax = 32,
+	a3stopTerminus = 0,
+	a3loopTerminus = 1,
+	a3pingpongTerminus = 2,
 };
 
 
@@ -134,6 +137,25 @@ struct a3_ClipPool
 
 	// number of clips
 	a3ui32 count;
+};
+
+//struct will handle what to do when the clip is finsihed
+
+/*
+the Loop and Pingpong should transition, which needs a currentKeyframe and a nextKeyframe, and will lerp between them
+
+-will call the a3ClipControllerInit with values of the nextClip
+*/
+struct TerminusHandler {
+	
+	//which terminus option (0 for stop, 1 for loop, 2 for pingpong)
+	a3ui32 behavior;
+
+	a3_Clip* nextClip;
+
+
+
+
 };
 
 
