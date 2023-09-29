@@ -31,11 +31,15 @@
 //-----------------------------------------------------------------------------
 
 // set rotation values for a single node pose
+
+//example of its use
+//a3spatialPoseSetRotation(spatialPose, 0.0f, -90.0f, -5.0f);
 inline a3i32 a3spatialPoseSetRotation(a3_SpatialPose* spatialPose, const a3f32 rx_degrees, const a3f32 ry_degrees, const a3f32 rz_degrees)
 {
 	if (spatialPose)
 	{
-
+		//rotation may need to be in Euler angles, I am not fully sure so just doing this for now
+		spatialPose->rotation = (a3vec3){ rx_degrees, ry_degrees, rz_degrees };
 	}
 	return -1;
 }
@@ -45,17 +49,20 @@ inline a3i32 a3spatialPoseSetScale(a3_SpatialPose* spatialPose, const a3f32 sx, 
 {
 	if (spatialPose)
 	{
-
+		spatialPose->scale = (a3vec3){ sx, sy, sz };
 	}
 	return -1;
 }
 
 // translation
+// 
+// example of its use
+//a3spatialPoseSetTranslation(spatialPose, 0.0f, -0.1f, +0.1f);
 inline a3i32 a3spatialPoseSetTranslation(a3_SpatialPose* spatialPose, const a3f32 tx, const a3f32 ty, const a3f32 tz)
 {
 	if (spatialPose)
 	{
-
+		spatialPose->position = (a3vec3){ tx,ty,tz };
 	}
 	return -1;
 }
@@ -88,7 +95,7 @@ inline a3i32 a3spatialPoseCopy(a3_SpatialPose* spatialPose_out, const a3_Spatial
 {
 	if (spatialPose_out && spatialPose_in)
 	{
-
+		spatialPose_out = spatialPose_in;
 	}
 	return -1;
 }

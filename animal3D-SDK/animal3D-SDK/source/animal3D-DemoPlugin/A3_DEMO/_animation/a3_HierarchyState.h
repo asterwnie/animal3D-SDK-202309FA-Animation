@@ -69,7 +69,7 @@ struct a3_HierarchyPoseGroup
 // hierarchy state structure
 struct a3_HierarchyState
 {
-	// pointer to hierarcy
+	// pointer to hierarchy
 	const a3_Hierarchy* hierarchy;
 };
 	

@@ -100,6 +100,16 @@ enum a3_SpatialPoseChannel
 struct a3_SpatialPose
 {
 	a3mat4 transform;
+
+	//position of the node (local space / in relation to parent)
+	a3vec3 position;
+
+	//rotation of the node (local space)
+	a3vec3 rotation;
+
+	//scale of the node (local space) - this will likely not get used, is very situational
+	a3vec3 scale;
+
 };
 
 
