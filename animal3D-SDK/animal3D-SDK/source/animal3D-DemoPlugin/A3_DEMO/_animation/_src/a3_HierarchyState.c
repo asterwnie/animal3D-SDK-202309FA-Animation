@@ -40,10 +40,31 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 		// determine memory requirements
 
 		// allocate everything (one malloc)
+		const size_t sz = 
+			sizeof(a3_HierarchyPose) * poseCount
+			+ sizeof(a3_SpatialPose) * poseCount
+			* hierarchy->numNodes;
 		//??? = (...)malloc(sz);
+		void* memory = malloc(sz);
+
 
 		// set pointers
 		poseGroup_out->hierarchy = hierarchy;
+
+		//need:
+		//starting address for hierarchical poses
+		a3_HierarchyPose* hPoseBase = (a3_HierarchyPose*)memory;
+		//starting address for spatial poses
+		a3_SpatialPose* poseBase = (a3_SpatialPose*)(hPoseBase + poseCount);
+		//link them together; each hPose should get 'numNodes' spatial poses
+		//(for loop)
+		poseGroup_out->hPose = hPoseBase;
+		for (a3ui32 i = 0; i < poseGroup_out->poseCount; i++)
+		{
+			poseGroup_out->hPose[i].pose /*= ???*/;
+
+		}
+
 
 		// reset all data
 
