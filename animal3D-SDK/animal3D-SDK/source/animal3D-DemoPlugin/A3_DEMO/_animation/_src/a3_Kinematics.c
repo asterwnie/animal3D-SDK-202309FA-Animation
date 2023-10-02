@@ -34,10 +34,11 @@ a3i32 a3kinematicsSolveForwardPartial(const a3_HierarchyState *hierarchyState, c
 		firstIndex < hierarchyState->hierarchy->numNodes && nodeCount)
 	{
 		// ****TO-DO: implement forward kinematics algorithm
+		
 		//	- for all nodes starting at first index
-		a3ui32 i, n, j, p;
+		a3ui32 i, n, j, p; // j is joint index we are currently evaluating; p is the parent index
 		for (i = firstIndex, n = firstIndex + nodeCount;
-			i < n; i++)
+			i < n; ++i) // iterate through all the nodes we're asking for in the range
 		{
 			const a3_HierarchyNode* node = hierarchyState->hierarchy->nodes + i;
 			j = node->index;

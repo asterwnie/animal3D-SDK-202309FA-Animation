@@ -50,6 +50,16 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 
 		// set pointers
 		poseGroup_out->hierarchy = hierarchy;
+		// starting address for the hierarchical poses
+		a3_HierarchyPose* hposeBase = (a3_HierarchyPose*)mem;
+		// starting address for the spetial poses
+		a3_SpatialPose* poseBase = (a3_SpatialPose*)(hposeBase + poseCount);
+		// link the two together: each hpose gets 'numNodes' spatial poses!
+		poseGroup_out->hpose = hposeBase;
+		for (/*numNodes*/)
+		{
+			poseGroup_out->hpose[i].pose = ??? ;
+		}
 
 		//need:
 		//starting address for hierarchical poses

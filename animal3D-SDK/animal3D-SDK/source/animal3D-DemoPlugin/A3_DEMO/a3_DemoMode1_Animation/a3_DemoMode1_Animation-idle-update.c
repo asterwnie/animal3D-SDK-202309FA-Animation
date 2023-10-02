@@ -102,12 +102,17 @@ void a3animation_update(a3_DemoState* demoState, a3_DemoMode1_Animation* demoMod
 	// skeletal
 	if (demoState->updateAnimation)
 	{
+		// selecting display[0] gives you your current pose.
+		// this just calculates the current time as your index.
 		i = (a3ui32)(demoState->timer_display->totalTime);
 		demoMode->hierarchyKeyPose_display[0] = (i + 0) % (demoMode->hierarchyPoseGroup_skel->poseCount - 1);
 		demoMode->hierarchyKeyPose_display[1] = (i + 1) % (demoMode->hierarchyPoseGroup_skel->poseCount - 1);
 		demoMode->hierarchyKeyPose_param = (a3real)(demoState->timer_display->totalTime - (a3f64)i);
 	}
+	
 
+	// step 1: Calculate delta poses.
+	// can also copy instead of lerp (just jumps between poses)
 	//a3hierarchyPoseCopy(activeHS->objectSpace,
 	//	demoMode->hierarchyPoseGroup_skel->hpose + demoMode->hierarchyKeyPose_display[0] + 1,
 	//	demoMode->hierarchy_skel->numNodes);
@@ -120,15 +125,19 @@ void a3animation_update(a3_DemoState* demoState, a3_DemoMode1_Animation* demoMod
 		baseHS->localSpace, // holds base pose
 		activeHS->objectSpace, // temp storage
 		demoMode->hierarchy_skel->numNodes);
+
+	// step 3: convert to matrix
 	a3hierarchyPoseConvert(activeHS->localSpace,
 		demoMode->hierarchy_skel->numNodes,
 		demoMode->hierarchyPoseGroup_skel->channel,
 		demoMode->hierarchyPoseGroup_skel->order);
+
+	// step 4: calculate forward kinematics
 	a3kinematicsSolveForward(activeHS);
 
 	//don't need these rn
-	//a3hierarchyStateUpdateObjectInverse(activeHS);
-	//a3hierarchyStateUpdateObjectBindToCurrent(activeHS, baseHS);
+	//a3hierarchyStateUpdateObjectInverse(activeHS); // used for skinning (not used in lab 2)
+	//a3hierarchyStateUpdateObjectBindToCurrent(activeHS, baseHS); // used for skinning (not used in lab 2)
 
 
 	// prepare and upload graphics data
