@@ -53,8 +53,6 @@ struct a3_HierarchyPose
 {
 	a3_SpatialPose* spatialPose;
 
-	//need to fill out
-	a3_SpatialPose* pose;
 };
 
 
@@ -63,7 +61,6 @@ struct a3_HierarchyPoseGroup
 {
 	// pointer to hierarchy
 	const a3_Hierarchy* hierarchy;
-
 
 	a3_HierarchyPose* hPose;
 
