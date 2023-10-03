@@ -68,6 +68,7 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 
 		// reset all data
 		// ....
+		poseGroup_out->poseCount = poseCount;
 
 		// done
 		return 1;
@@ -82,10 +83,18 @@ a3i32 a3hierarchyPoseGroupRelease(a3_HierarchyPoseGroup *poseGroup)
 	if (poseGroup && poseGroup->hierarchy)
 	{
 		// release everything (one free)
-		//free(poseGroup->hierarchy); // *****is this everything??
+		 // *****is this everything??
+		free(poseGroup->hPose);
 
 		// reset pointers
 		poseGroup->hierarchy = 0;
+		poseGroup->channel = 0;
+		poseGroup->hPose = 0;
+		poseGroup->order = 0;
+		poseGroup->poseCount = 0;
+		poseGroup->spatialPoseCount = 0;
+		poseGroup->spatialPoses = 0;
+
 
 		// done
 		return 1;
@@ -134,10 +143,14 @@ a3i32 a3hierarchyStateRelease(a3_HierarchyState *state)
 	if (state && state->hierarchy)
 	{
 		// release everything (one free)
-		//free(state->hierarchy); // *****is this everything??
+		// *****is this everything??
+		free(state->objectSpace);
 
 		// reset pointers
 		state->hierarchy = 0;
+		state->localSpace = 0;
+		state->objectSpace = 0;
+		state->objectSpaceBindToCurrent = 0;
 
 		// done
 		return 1;
