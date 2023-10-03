@@ -68,6 +68,8 @@ inline a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3
 	//this is the important one
 	if (pose_inout && nodeCount)
 	{
+		//Take all of the poses (rotation, transformation, scale) and encode them into a matrix (local space)
+		//Before we can convert, we need to know the final state of the pose
 
 	}
 	return -1;
@@ -78,7 +80,11 @@ inline a3i32 a3hierarchyPoseCopy(const a3_HierarchyPose* pose_out, const a3_Hier
 {
 	if (pose_out && pose_in && nodeCount)
 	{
-
+		for (a3i32 i = 0; i < nodeCount; ++i)
+		{
+			pose_out->spatialPose[i] = pose_in->spatialPose[i];
+		}
+		
 	}
 	return -1;
 }

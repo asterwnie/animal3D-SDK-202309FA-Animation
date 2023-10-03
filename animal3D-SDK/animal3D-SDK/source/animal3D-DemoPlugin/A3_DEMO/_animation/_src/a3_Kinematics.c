@@ -33,7 +33,7 @@ a3i32 a3kinematicsSolveForwardPartial(const a3_HierarchyState *hierarchyState, c
 	if (hierarchyState && hierarchyState->hierarchy && 
 		firstIndex < hierarchyState->hierarchy->numNodes && nodeCount)
 	{
-		// ****TO-DO: implement forward kinematics algorithm
+		// ****TO-DO: finish implementing forward kinematics algorithm
 		
 		//	- for all nodes starting at first index
 		a3ui32 i, n, j, p; // j is joint index we are currently evaluating; p is the parent index
@@ -46,15 +46,15 @@ a3i32 a3kinematicsSolveForwardPartial(const a3_HierarchyState *hierarchyState, c
 			//		- if node is not root (has parent node)
 			if (p >= 0)
 			{
-				//			- object matrix = parent object matrix * local matrix
+				//	- object matrix = parent object matrix * local matrix
 				a3real4x4Product(hierarchyState->objectSpace.pose[j].transform.m, //object matrix = 
 					hierarchyState->objectSpace.pose[p].transform.m, //parent object matrix *
 					hierarchyState->localSpace.pose[j].transform.m); //local matrix
 			}
-			//		- else
+			//	- else
 			else
 			{
-				//			- copy local matrix to object matrix
+				//	- copy local matrix to object matrix
 				a3real4x4SetReal4x4(hierarchyState->objectSpace.pose[j].transform.m, //obhect matrix
 					hierarchyState->localSpace.pose[j].transform.m); //= local matrix
 
