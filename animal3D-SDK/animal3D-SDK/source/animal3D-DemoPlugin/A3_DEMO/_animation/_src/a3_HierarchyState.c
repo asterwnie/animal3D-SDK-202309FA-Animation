@@ -122,6 +122,7 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		void* memory = malloc(sz);
 
 		// starting addresses
+		// ** ADJUST THESE now that they're not pointers!! the spatial poses ARE the pointers tho
 		state_out->objectSpace = (a3_HierarchyPose*)memory;
 		state_out->localSpace = (a3_HierarchyPose*)(state_out->objectSpace + hierarchy->numNodes);
 		state_out->objectSpaceBindToCurrent = (a3_HierarchyPose*)(state_out->localSpace + hierarchy->numNodes);

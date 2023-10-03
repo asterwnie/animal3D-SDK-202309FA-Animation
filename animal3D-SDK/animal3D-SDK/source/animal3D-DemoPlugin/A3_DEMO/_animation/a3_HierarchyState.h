@@ -94,13 +94,13 @@ struct a3_HierarchyState
 	//A hierarchical pose representing each node's animated pose at the current time.
 
 	//A hierarchical pose representing each node's transformation relative to the root's parent space (the actual object that the hierarchy represents).
-	a3_HierarchyPose* objectSpace;
+	a3_HierarchyPose objectSpace;
 
 	//A hierarchical pose representing each node's transformation relative to its parent's space.
-	a3_HierarchyPose* localSpace;
+	a3_HierarchyPose localSpace;
 
 	// is this the sample pose...?
-	a3_HierarchyPose* objectSpaceBindToCurrent;
+	a3_HierarchyPose objectSpaceBindToCurrent;
 
 };
 	
