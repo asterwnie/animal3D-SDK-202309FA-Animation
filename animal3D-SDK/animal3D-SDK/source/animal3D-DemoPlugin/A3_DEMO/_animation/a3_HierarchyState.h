@@ -131,7 +131,6 @@ a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3ui32 no
 // copy full hierarchy pose
 a3i32 a3hierarchyPoseCopy(const a3_HierarchyPose* pose_out, const a3_HierarchyPose* pose_in, const a3ui32 nodeCount);
 
-// a3hierarchyPoseLerp
 // For this assignment, implement the 'step' interpolation algorithm, which is effectively just duplication of a single input key pose.  This phase takes key poses to be interpolated and stores the result in the target state's sample pose (for the 'step' function, this just means directly copying the pose from the pool into the state).
 a3i32 a3hierarchyPoseLerp(const a3_HierarchyPose* pose_out, const a3_HierarchyPose* pose_from, const a3_HierarchyPose* pose_to, const a3real param, const a3ui32 nodeCount);
 

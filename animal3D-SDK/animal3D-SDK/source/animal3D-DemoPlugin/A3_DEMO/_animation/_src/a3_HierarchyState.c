@@ -100,7 +100,10 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		// determine memory requirements
 
 		// allocate everything (one malloc)
-		//??? = (...)malloc(sz);
+		const size_t sz =
+			sizeof(a3_HierarchyState);
+
+		void* memory = malloc(sz);
 
 		// set pointers
 		state_out->hierarchy = hierarchy;

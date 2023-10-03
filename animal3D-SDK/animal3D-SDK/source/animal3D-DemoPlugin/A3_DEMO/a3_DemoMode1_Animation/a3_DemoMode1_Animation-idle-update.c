@@ -129,8 +129,8 @@ void a3animation_update(a3_DemoState* demoState, a3_DemoMode1_Animation* demoMod
 	// step 3: convert to matrix
 	a3hierarchyPoseConvert(activeHS->localSpace,
 		demoMode->hierarchy_skel->numNodes,
-		demoMode->hierarchyPoseGroup_skel->channel,
-		demoMode->hierarchyPoseGroup_skel->order);
+		*demoMode->hierarchyPoseGroup_skel->channel,
+		*demoMode->hierarchyPoseGroup_skel->order);
 
 	// step 4: calculate forward kinematics
 	a3kinematicsSolveForward(activeHS);

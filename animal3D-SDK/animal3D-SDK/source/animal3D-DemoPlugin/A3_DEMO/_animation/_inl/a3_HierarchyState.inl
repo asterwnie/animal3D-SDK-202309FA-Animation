@@ -57,7 +57,10 @@ inline a3i32 a3hierarchyPoseReset(const a3_HierarchyPose* pose_inout, const a3ui
 {
 	if (pose_inout && nodeCount)
 	{
-
+		for (a3ui32 i = 0; i < nodeCount; ++i)
+		{
+			//pose_inout->spatialPose = ???;
+		}
 	}
 	return -1;
 }
@@ -80,12 +83,24 @@ inline a3i32 a3hierarchyPoseCopy(const a3_HierarchyPose* pose_out, const a3_Hier
 {
 	if (pose_out && pose_in && nodeCount)
 	{
-		for (a3i32 i = 0; i < nodeCount; ++i)
+		for (a3ui32 i = 0; i < nodeCount; ++i)
 		{
 			pose_out->spatialPose[i] = pose_in->spatialPose[i];
 		}
 		
 	}
+	return -1;
+}
+
+// For this assignment, implement the 'step' interpolation algorithm, which is effectively just duplication of a single input key pose.  This phase takes key poses to be interpolated and stores the result in the target state's sample pose (for the 'step' function, this just means directly copying the pose from the pool into the state).
+a3i32 a3hierarchyPoseLerp(const a3_HierarchyPose* pose_out, const a3_HierarchyPose* pose_from, const a3_HierarchyPose* pose_to, const a3real param, const a3ui32 nodeCount)
+{
+	return -1;
+}
+
+// This phase takes the base pose from the source pool and the sample pose from the state as inputs, and concatenates them into the state's local pose.
+a3i32 a3hierarchyPoseConcat(const a3_HierarchyPose* pose_out, const a3_HierarchyPose* base_pose, const a3_HierarchyPose* sample_pose, const a3ui32 nodeCount)
+{
 	return -1;
 }
 

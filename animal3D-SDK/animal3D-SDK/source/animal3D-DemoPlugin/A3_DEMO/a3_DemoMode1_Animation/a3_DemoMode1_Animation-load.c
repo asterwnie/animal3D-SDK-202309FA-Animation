@@ -134,7 +134,8 @@ void a3animation_init_animation(a3_DemoState const* demoState, a3_DemoMode1_Anim
 
 
 	// allocate poses
-	a3hierarchyPoseGroupCreate(hierarchyPoseGroup, hierarchy, 5, a3poseEulerOrder_xyz);
+	//a3hierarchyPoseGroupCreate(hierarchyPoseGroup, hierarchy, 5, a3poseEulerOrder_xyz);
+	a3hierarchyPoseGroupCreate(hierarchyPoseGroup, hierarchy, 5);
 
 	// define "bind pose" or "base pose" or the initial transformation 
 	//	description for each joint (not a literal transform)
@@ -344,7 +345,7 @@ void a3animation_init_animation(a3_DemoState const* demoState, a3_DemoMode1_Anim
 	hierarchyState->hierarchy = 0;
 	a3hierarchyStateCreate(hierarchyState, hierarchy);
 	a3hierarchyPoseCopy(hierarchyState->localSpace, hierarchyPoseGroup->hPose, hierarchy->numNodes);
-	a3hierarchyPoseConvert(hierarchyState->localSpace, hierarchy->numNodes, hierarchyPoseGroup->channel, hierarchyPoseGroup->order);
+	a3hierarchyPoseConvert(hierarchyState->localSpace, hierarchy->numNodes, *hierarchyPoseGroup->channel, *hierarchyPoseGroup->order);
 	a3kinematicsSolveForward(hierarchyState);
 	a3hierarchyStateUpdateObjectInverse(hierarchyState);
 
