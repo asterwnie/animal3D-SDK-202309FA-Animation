@@ -837,7 +837,7 @@ A3_INLINE a3real4x4r a3real4x4Sub(a3real4x4p mL_inout, const a3real4x4p mR);
 // A3: Multiply matrix by scalar.
 //	param m_inout: matrix by which to multiply scalar and store
 //	param s: scalar to multiply matrix
-//	return m_inout
+//	return m_inouts
 A3_INLINE a3real4x4r a3real4x4MulS(a3real4x4p m_inout, const a3real s);
 
 // A3: Divide matrix by scalar.

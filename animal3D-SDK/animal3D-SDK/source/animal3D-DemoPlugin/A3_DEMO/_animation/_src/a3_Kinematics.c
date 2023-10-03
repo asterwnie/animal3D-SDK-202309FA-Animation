@@ -55,7 +55,7 @@ a3i32 a3kinematicsSolveForwardPartial(const a3_HierarchyState *hierarchyState, c
 			else
 			{
 				//	- copy local matrix to object matrix
-				a3real4x4SetReal4x4(hierarchyState->objectSpace->spatialPose[j].transform.m, //obhect matrix
+				a3real4x4SetReal4x4(hierarchyState->objectSpace->spatialPose[j].transform.m, //object matrix
 					hierarchyState->localSpace->spatialPose[j].transform.m); //= local matrix
 
 			}

@@ -55,7 +55,7 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 		//starting address for spatial poses
 		a3_SpatialPose* poseBase = (a3_SpatialPose*)(hPoseBase + poseCount);
 		//starting address for channels
-		poseGroup_out->channel = (a3_SpatialPoseChannel*)(poseBase + hierarchy->numNodes); // this might be wrong
+		poseGroup_out->channel = (a3_SpatialPoseChannel*)(poseBase + poseCount * hierarchy->numNodes); // this might be wrong
 		// starting address for order
 		poseGroup_out->order = (a3_SpatialPoseEulerOrder*)(poseGroup_out->channel + poseCount);
 
@@ -63,7 +63,10 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 		poseGroup_out->hPose = hPoseBase;
 		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
 		{
-			poseGroup_out->hPose[i].spatialPose = (a3_SpatialPose*)(poseBase + i);
+			if (poseGroup_out->hPose)
+			{
+				poseGroup_out->hPose[i].spatialPose = (a3_SpatialPose*)(poseBase + i);
+			}
 		}
 
 		// reset all data
@@ -133,6 +136,7 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		// done
 		return 1;
 	}
+
 	return -1;
 }
 
