@@ -40,10 +40,11 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 		// determine memory requirements
 
 		// allocate everything (one malloc)
-		const size_t sz = 
+		const size_t sz =
 			sizeof(a3_HierarchyPose) * poseCount
-			+ sizeof(a3_SpatialPose) * poseCount
-			* hierarchy->numNodes;
+			+ sizeof(a3_SpatialPose) * poseCount * hierarchy->numNodes
+			+ sizeof(a3_SpatialPoseChannel) * poseCount
+			+ sizeof(a3_SpatialPoseEulerOrder);
 
 		void* memory = malloc(sz);
 
@@ -53,11 +54,16 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 		a3_HierarchyPose* hPoseBase = (a3_HierarchyPose*)memory;
 		//starting address for spatial poses
 		a3_SpatialPose* poseBase = (a3_SpatialPose*)(hPoseBase + poseCount);
+		//starting address for channels
+		poseGroup_out->channel = (a3_SpatialPoseChannel*)(poseBase + hierarchy->numNodes); // this might be wrong
+		// starting address for order
+		poseGroup_out->order = (a3_SpatialPoseEulerOrder*)(poseGroup_out->channel + poseCount);
+
 		//link them together; each hPose should get 'numNodes' spatial poses
 		poseGroup_out->hPose = hPoseBase;
 		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
 		{
-			poseGroup_out->hPose[i].spatialPose = poseBase;
+			poseGroup_out->hPose[i].spatialPose = (a3_SpatialPose*)(poseBase + i);
 		}
 
 		// reset all data
@@ -101,14 +107,19 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 
 		// allocate everything (one malloc)
 		const size_t sz =
-			sizeof(a3_HierarchyState);
+			sizeof(a3_HierarchyPose) * hierarchy->numNodes * 3;
 
 		void* memory = malloc(sz);
+
+		state_out->objectSpace = (a3_HierarchyPose*)memory;
+		state_out->localSpace = (a3_HierarchyPose*)(state_out->objectSpace + hierarchy->numNodes);
+		state_out->objectSpaceBindToCurrent = (a3_HierarchyPose*)(state_out->localSpace + hierarchy->numNodes);
 
 		// set pointers
 		state_out->hierarchy = hierarchy;
 
 		// reset all data
+		//...
 
 		// done
 		return 1;
