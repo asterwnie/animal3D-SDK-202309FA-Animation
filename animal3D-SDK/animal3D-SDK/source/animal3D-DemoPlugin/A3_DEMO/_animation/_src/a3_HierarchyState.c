@@ -137,6 +137,7 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		{
 			// calc address of spatial pose array
 			state_out->objectSpace->spatialPose[i] = (a3_SpatialPose*)(state_out->objectSpace + i);
+			a3spatialPoseCreate(&(state_out->objectSpace->spatialPose[i]));
 			// assign to pointer in hierarchy pose
 		}
 
@@ -145,6 +146,7 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		{
 			// calc address of spatial pose array
 			state_out->localSpace->spatialPose[i] = (a3_SpatialPose*)(state_out->localSpace + i);
+			a3spatialPoseCreate(&(state_out->localSpace->spatialPose[i]));
 			// assign to pointer in hierarchy pose
 		}
 
@@ -153,6 +155,7 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		{
 			// calc address of spatial pose array
 			state_out->objectSpaceBindToCurrent->spatialPose[i] = (a3_SpatialPose*)(state_out->objectSpaceBindToCurrent + i);
+			a3spatialPoseCreate(&(state_out->objectSpaceBindToCurrent->spatialPose[i]));
 			// assign to pointer in hierarchy pose
 		}
 
