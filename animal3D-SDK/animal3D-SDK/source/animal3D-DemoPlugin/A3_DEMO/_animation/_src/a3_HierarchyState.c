@@ -132,6 +132,11 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 
 		// reset all data
 		//...
+		for (/*numnodes*/)
+		{
+			// calc address of spatial pose array
+			// assign to pointer in hierarchy pose
+		}
 
 		// done
 		return 1;
