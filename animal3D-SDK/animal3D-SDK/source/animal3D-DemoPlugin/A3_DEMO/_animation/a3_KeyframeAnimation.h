@@ -40,7 +40,7 @@ Date:   9/14/2023
 #include "animal3D-A3DM/a3math/a3vector.h"
 #include "animal3D-A3DM/a3math/a3interpolation.h"
 
-
+#include <stdio.h>
 //-----------------------------------------------------------------------------
 
 #ifdef __cplusplus
@@ -61,6 +61,9 @@ typedef struct a3_ClipPool					a3_ClipPool;
 enum
 {
 	a3keyframeAnimation_nameLenMax = 32,
+	a3stopTerminus = 0,
+	a3loopTerminus = 1,
+	a3pingpongTerminus = 2,
 };
 
 
@@ -78,7 +81,9 @@ struct a3_Keyframe
 	a3real invDuration;
 
 	//data
-	a3ui32 keyData;
+	//for project 1, will store the position and dimensions of the sprite
+	//x, y, width, height
+	a3ui32 keyData[4];
 };
 
 // pool of keyframe descriptors
@@ -99,7 +104,7 @@ a3i32 a3keyframePoolCreate(a3_KeyframePool* keyframePool_out, const a3ui32 count
 a3i32 a3keyframePoolRelease(a3_KeyframePool* keyframePool);
 
 // initialize keyframe
-a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x);
+a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x[4]);
 
 //-----------------------------------------------------------------------------
 
@@ -124,6 +129,9 @@ struct a3_Clip
 	a3ui32 last;
 
 	a3_KeyframePool* pool;
+
+	//the terminus action for the clip
+	a3byte terminus[a3keyframeAnimation_nameLenMax];
 };
 
 // group of clips
@@ -137,6 +145,28 @@ struct a3_ClipPool
 };
 
 
+//ignoring for now
+
+//struct will handle what to do when the clip is finsihed
+
+/*
+the Loop and Pingpong should transition, which needs a currentKeyframe and a nextKeyframe, and will lerp between them
+
+-will call the a3ClipControllerInit with values of the nextClip
+
+struct TerminusHandler {
+	
+	//which terminus option (0 for stop, 1 for loop, 2 for pingpong)
+	a3ui32 behavior;
+
+	a3_Clip* nextClip;
+
+
+
+
+};
+*/
+
 // allocate clip pool
 a3i32 a3clipPoolCreate(a3_ClipPool* clipPool_out, const a3ui32 count);
 
@@ -144,7 +174,7 @@ a3i32 a3clipPoolCreate(a3_ClipPool* clipPool_out, const a3ui32 count);
 a3i32 a3clipPoolRelease(a3_ClipPool* clipPool);
 
 // initialize clip with first and last indices
-a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_nameLenMax], const a3_KeyframePool* keyframePool, const a3ui32 firstKeyframeIndex, const a3ui32 finalKeyframeIndex);
+a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_nameLenMax], const a3_KeyframePool* keyframePool, const a3ui32 clipDuration, const a3ui32 firstKeyframeIndex, const a3ui32 finalKeyframeIndex);
 
 // get clip index from pool
 a3i32 a3clipGetIndexInPool(const a3_ClipPool* clipPool, const a3byte clipName[a3keyframeAnimation_nameLenMax]);
@@ -155,6 +185,8 @@ a3i32 a3clipCalculateDuration(a3_Clip* clip);
 // calculate keyframes' durations by distributing clip's duration
 a3i32 a3clipDistributeDuration(a3_Clip* clip, const a3real newClipDuration);
 
+//read clips from a text file, create clip pool with them
+a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[256], a3_KeyframePool* keyPool );
 
 //-----------------------------------------------------------------------------
 

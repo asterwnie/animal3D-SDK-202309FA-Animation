@@ -184,6 +184,7 @@ void a3starter_load(a3_DemoState const* demoState, a3_DemoMode0_Starter* demoMod
 	//setup assignment 1 stuff
 	printf("Initializing assignment stuff.");
 
+	/*
 	a3keyframePoolCreate(&demoMode->keyPool, 4); //4 keyframes
 	
 	//initialize individual keyframes here
@@ -198,9 +199,14 @@ void a3starter_load(a3_DemoState const* demoState, a3_DemoMode0_Starter* demoMod
 
 	//initialize individual clips here
 	a3clipInit(&demoMode->clipPool.clip[0], "testClip", &demoMode->keyPool, 0, 3);
+	*/
+
+	//creating and initializing the keyframes and clips from the file
+	a3clipPoolFileInit(&demoMode->clipPool, "resource/animdata/clip_list_proj1.txt", &demoMode->keyPool);
+
 
 	a3clipControllerInit(&demoMode->clipCtrl, "testCtrl", &demoMode->clipPool, 0);
-
+	
 }
 
 

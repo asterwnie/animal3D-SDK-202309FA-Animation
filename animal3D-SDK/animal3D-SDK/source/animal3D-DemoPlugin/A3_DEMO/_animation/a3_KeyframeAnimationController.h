@@ -84,7 +84,6 @@ struct a3_ClipController
 	a3_ClipPool* _clipPool;
 };
 
-
 //-----------------------------------------------------------------------------
 
 // initialize clip controller
@@ -97,6 +96,9 @@ a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt);
 a3i32 a3clipControllerSetClip(a3_ClipController* clipCtrl, const a3_ClipPool* clipPool, const a3ui32 clipIndex_pool);
 
 
+
+//function that handles terminus actions
+a3i32 a3HandleTerminus(a3_ClipController* clipCtrl, a3_Clip* actionClip, a3byte terminus[a3keyframeAnimation_nameLenMax]);
 //-----------------------------------------------------------------------------
 
 

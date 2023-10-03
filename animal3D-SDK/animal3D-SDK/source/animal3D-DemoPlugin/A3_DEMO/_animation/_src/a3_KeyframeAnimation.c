@@ -74,13 +74,13 @@ a3i32 a3keyframePoolRelease(a3_KeyframePool* keyframePool)
 }
 
 // initialize keyframe
-a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x)
+a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3ui32 value_x[4])
 {
 	if (!keyframe_out) return -1;
 
 	keyframe_out->keyframeDuration = duration;
 	keyframe_out->invDuration = 1.0f / duration;
-	keyframe_out->keyData = value_x;
+	keyframe_out->keyData;
 
 	return 0;
 }
@@ -108,7 +108,7 @@ a3i32 a3clipPoolRelease(a3_ClipPool* clipPool)
 
 
 // initialize clip with first and last indices
-a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_nameLenMax], const a3_KeyframePool* keyframePool, const a3ui32 firstKeyframeIndex, const a3ui32 finalKeyframeIndex)
+a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_nameLenMax], const a3_KeyframePool* keyframePool, const a3ui32 clipDuration, const a3ui32 firstKeyframeIndex, const a3ui32 finalKeyframeIndex)
 {
 	
 	memcpy(clip_out->name, clipName, sizeof(clip_out->name));
@@ -116,12 +116,11 @@ a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_na
 	clip_out->first = firstKeyframeIndex;
 	clip_out->last = finalKeyframeIndex;
 
-#pragma warning( disable : 4090)
-	//just testing without this warning, will remove later
 	clip_out->pool = keyframePool; 
 
 
 	//goes through each keyframe in the pool and finds the total duration
+	/*
 	a3real sum = 0;
 	
 	for(a3ui32 i = clip_out->first; i <= clip_out->last; i++)
@@ -129,6 +128,8 @@ a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_na
 		sum += clip_out->pool->keyframe[i].keyframeDuration;
 	}
 	clip_out->duration = sum;
+	*/
+	clip_out->duration = clipDuration;
 	clip_out->invDuration = 1 / clip_out->duration;
 
 	return 0;
@@ -147,6 +148,99 @@ a3i32 a3clipGetIndexInPool(const a3_ClipPool* clipPool, const a3byte clipName[a3
 	}
 	return -1;
 }
+
+/*
+will read through the file, fill out keyframe pool with each cell (length * width or col * row)
+Will go through each line, creating a clip with the given duration, start, and end, from that keypool
+
+for now, ignore transitions and just get that part down
+
+file name: resource/tex/sprite/spriteTest8x8.png
+
+sprite sheet is 512x512
+Each sprite is 64x64
+So do position (64*clip, 64*keyframe), with width and height 64,64
+
+*/
+a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[256], a3_KeyframePool* keyPool)
+{
+	//creating the keyframe pool to hold each sprite
+	a3keyframePoolCreate(keyPool, 64); //64 keyframes, for the 8x8 sprite sheet
+
+	//going through each row and column, adding the sprite's location and dimensions
+	for (int col = 0; col < 8; col++)
+	{
+		for (int rows = 0; rows < 8; rows++)
+		{
+			a3ui32 spriteData[4] = {64*rows, 64*col, 64, 64};
+			a3keyframeInit(&keyPool->keyframe[col*8+rows], 1, spriteData); //will go left to right, top to bottom on sprite sheet
+		}
+	}
+
+	//the file that contains the clip information
+	FILE* myFile = fopen(clipFile, "r");
+
+	//the first character of the line, will be @ if it is one that should be read
+	a3byte check[1];
+
+	//the number of valid lines, or the number of clips in the pool
+	int clipCount = 0;
+
+	while (!feof(myFile))
+	{
+		fgets(check, 1, myFile); //read the first char into the buffer
+		if (check == '@')
+		{
+			clipCount++;
+		}
+	}
+
+	//resetting the file back to the start for the next pass
+	rewind(myFile);
+
+	//creation of the clip pool, with the clipCount we just found
+	a3clipPoolCreate(clipPool, clipCount);
+		
+	//the buffer that holds each line of the text file
+	a3byte buffer[256];
+
+	//the variables that will store clip data being read
+	a3byte clipName[a3keyframeAnimation_nameLenMax];
+	a3ui32 clipDuration;
+	a3ui32 firstIndex;
+	a3ui32 lastIndex;
+	a3byte ignore;
+
+	//keeping track of which clip is being added
+	a3ui32 counter = 0;
+	//going through each line of the file
+	while (!feof(myFile))
+	{
+		fgets(buffer, 256, myFile); //read a line into the buffer
+		if (buffer[0] != '@') 
+			//making sure it is a valid line
+		{
+			continue;
+		}
+
+		//reading values into the variables (ignore is just to catch the @ symbol at the start of the line)
+		if (!sscanf(buffer, "%c %s %d %d %d", &ignore, &clipName, &clipDuration, &firstIndex, &lastIndex))
+		{
+			//failed to read line
+		}
+
+		//initiating clip with the read values
+		a3clipInit(&clipPool->clip[counter], clipName, keyPool, clipDuration, firstIndex, lastIndex);
+
+		//keeping track of how many clips have been put in the clip pool already
+		counter++;
+	}
+
+	fclose(myFile);
+}
+
+
+
 
 
 //-----------------------------------------------------------------------------
