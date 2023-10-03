@@ -57,7 +57,7 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 		poseGroup_out->hPose = hPoseBase;
 		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
 		{
-			poseGroup_out->hPose[i].spatialPose = hierarchy.
+			poseGroup_out->hPose[i].spatialPose = poseBase;
 		}
 
 		// reset all data

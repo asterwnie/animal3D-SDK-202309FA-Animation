@@ -115,6 +115,9 @@ struct a3_SpatialPose
 
 //-----------------------------------------------------------------------------
 
+// initialize a spatial pose
+a3i32 a3spatialPoseCreate(a3_SpatialPose* pose_out);
+
 // set rotation values for a single node pose
 a3i32 a3spatialPoseSetRotation(a3_SpatialPose* spatialPose, const a3f32 rx_degrees, const a3f32 ry_degrees, const a3f32 rz_degrees);
 

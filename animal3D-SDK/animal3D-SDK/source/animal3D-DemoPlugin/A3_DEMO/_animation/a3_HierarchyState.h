@@ -59,16 +59,25 @@ struct a3_HierarchyPose
 // pose group
 struct a3_HierarchyPoseGroup
 {
-	// pointer to hierarchy
+	// A pointer or reference to the hierarchy associated with this spatial data.  The pose pool describes the spatial properties of the hierarchy (where are they in space), while the hierarchy describes the overall organization of the poses (how are the poses related).
 	const a3_Hierarchy* hierarchy;
 
+	// The actual array of individual node poses.  This is comparable to the 'keyframe pool' for all poses associated with a hierarchy and its nodes.  To clarify: this is the set of all poses for all nodes.
+	a3_SpatialPose* spatialPoses; 	// spatial pose pool 
+
+	// Total number of spatial poses: hierarchical pose count times hierarchy node count.
+	a3ui32 spatialPoseCount;
+
+	// An array of hierarchical poses (referencing the spatial poses).  This is comparable to the 'keyframe pool' for a whole hierarchy.  This is what organizes the above individual node poses.
 	a3_HierarchyPose* hPose;
 
 	// number of hierarchical poses
 	a3ui32 poseCount;
 
+	// An array of transformation channels for each node in the hierarchy; describes which individual pose transformation components are used by each node (e.g. rotation x, translation xyz, etc.); this is useful for optimization later.
 	a3_SpatialPoseChannel* channel;
 
+	// Some global flag for the pool that describes the concatenation order of orientation channels.
 	a3_SpatialPoseEulerOrder* order;
 };
 
@@ -76,15 +85,21 @@ struct a3_HierarchyPoseGroup
 // hierarchy state structure
 struct a3_HierarchyState
 {
-	// pointer to hierarchy
+	// A pointer or reference to the hierarchy associated with this spatial state.
 	const a3_Hierarchy* hierarchy;
 
 	//need to fill out
 
+	//sample pose
+	//A hierarchical pose representing each node's animated pose at the current time.
+
+	//A hierarchical pose representing each node's transformation relative to the root's parent space (the actual object that the hierarchy represents).
 	a3_HierarchyPose* objectSpace;
 
+	//A hierarchical pose representing each node's transformation relative to its parent's space.
 	a3_HierarchyPose* localSpace;
 
+	// is this the sample pose...?
 	a3_HierarchyPose* objectSpaceBindToCurrent;
 
 };
@@ -115,6 +130,13 @@ a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3ui32 no
 
 // copy full hierarchy pose
 a3i32 a3hierarchyPoseCopy(const a3_HierarchyPose* pose_out, const a3_HierarchyPose* pose_in, const a3ui32 nodeCount);
+
+// a3hierarchyPoseLerp
+// For this assignment, implement the 'step' interpolation algorithm, which is effectively just duplication of a single input key pose.  This phase takes key poses to be interpolated and stores the result in the target state's sample pose (for the 'step' function, this just means directly copying the pose from the pool into the state).
+a3i32 a3hierarchyPoseLerp(const a3_HierarchyPose* pose_out, const a3_HierarchyPose* pose_from, const a3_HierarchyPose* pose_to, const a3real param, const a3ui32 nodeCount);
+
+// This phase takes the base pose from the source pool and the sample pose from the state as inputs, and concatenates them into the state's local pose.
+a3i32 a3hierarchyPoseConcat(const a3_HierarchyPose* pose_out, const a3_HierarchyPose* base_pose, const a3_HierarchyPose* sample_pose, const a3ui32 nodeCount);
 
 
 //-----------------------------------------------------------------------------
