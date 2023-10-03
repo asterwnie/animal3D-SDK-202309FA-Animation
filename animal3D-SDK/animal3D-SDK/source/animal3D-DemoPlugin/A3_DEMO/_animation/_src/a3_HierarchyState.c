@@ -76,7 +76,7 @@ a3i32 a3hierarchyPoseGroupRelease(a3_HierarchyPoseGroup *poseGroup)
 	if (poseGroup && poseGroup->hierarchy)
 	{
 		// release everything (one free)
-		//free(???);
+		//free(poseGroup->hierarchy); // *****is this everything??
 
 		// reset pointers
 		poseGroup->hierarchy = 0;
@@ -123,7 +123,7 @@ a3i32 a3hierarchyStateRelease(a3_HierarchyState *state)
 	if (state && state->hierarchy)
 	{
 		// release everything (one free)
-		//free(???);
+		//free(state->hierarchy); // *****is this everything??
 
 		// reset pointers
 		state->hierarchy = 0;
