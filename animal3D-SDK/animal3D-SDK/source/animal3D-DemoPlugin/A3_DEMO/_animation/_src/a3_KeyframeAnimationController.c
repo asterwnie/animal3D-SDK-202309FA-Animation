@@ -44,19 +44,23 @@ Date:   9/14/2023
 // initialize clip controller
 a3i32 a3clipControllerInit(a3_ClipController* clipCtrl_out, const a3byte ctrlName[a3keyframeAnimation_nameLenMax], const a3_ClipPool* clipPool, const a3ui32 clipIndex_pool)
 {
-	if (!clipCtrl_out) {
-		return -1;
-	}
-	if (!clipPool) {
-		return -1;
-	}
+	if (!clipCtrl_out)return -1;
+	if (!clipPool) return -1;
+
 	//setting the controller's name
 	memcpy(clipCtrl_out->name, ctrlName, sizeof(clipCtrl_out->name));
 
-	clipCtrl_out->_clipPool = (a3_ClipPool*)malloc(sizeof(a3_ClipPool));
-	
 	//setting the clip pool being controlled
-	clipCtrl_out->_clipPool->clip = clipPool->clip;
+	clipCtrl_out->_clipPool = (a3_ClipPool*)malloc(sizeof(a3_ClipPool));
+	if (!clipCtrl_out->_clipPool) return -1;
+
+	for (a3ui32 i = 0; i < clipPool->count; ++i)
+	{
+		//clipCtrl_out->_clipPool->clip[i] = (a3_Clip*)(clipCtrl_out->_clipPool + i);
+		//memcpy(clipCtrl_out->_clipPool->clip[i], clipPool->clip[i], sizeof(a3_Clip*));
+		clipCtrl_out->_clipPool[i].clips = clipPool->clips;
+	}
+	
 	//setting the index of the clip currently accessed
 	clipCtrl_out->clip = clipIndex_pool;
 	//should be starting with the first keyframe

@@ -138,7 +138,7 @@ struct a3_Clip
 struct a3_ClipPool
 {
 	// array of clips
-	a3_Clip* clip;
+	a3_Clip* clips;
 
 	// number of clips
 	a3ui32 count;

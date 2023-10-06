@@ -94,7 +94,7 @@ a3i32 a3clipPoolCreate(a3_ClipPool* clipPool_out, const a3ui32 count)
 	const size_t sz = sizeof(a3_Clip) * count;
 	void* memory = malloc(sz);
 
-	clipPool_out->clip = (a3_Clip*)memory;
+	clipPool_out->clips = (a3_Clip*)memory;
 
 	clipPool_out->count = count;
 	return 0;
@@ -134,7 +134,7 @@ a3i32 a3clipGetIndexInPool(const a3_ClipPool* clipPool, const a3byte clipName[a3
 {
 	for (a3ui32 i = 0; i < clipPool->count; i++)
 	{
-		if (clipPool->clip[i].name == clipName)
+		if (clipPool->clips[i].name == clipName)
 		{
 			return i;
 		}
@@ -226,7 +226,7 @@ a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[256], a3_Keyfram
 		}
 
 		//initiating clip with the read values
-		a3clipInit(&clipPool->clip[counter], clipName, keyPool, clipDuration, firstIndex, lastIndex);
+		a3clipInit(&clipPool->clips[counter], clipName, keyPool, clipDuration, firstIndex, lastIndex);
 
 		//keeping track of how many clips have been put in the clip pool already
 		counter++;

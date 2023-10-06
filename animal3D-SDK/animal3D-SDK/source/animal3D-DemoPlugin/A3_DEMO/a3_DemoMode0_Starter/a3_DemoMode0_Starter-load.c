@@ -198,7 +198,7 @@ void a3starter_load(a3_DemoState const* demoState, a3_DemoMode0_Starter* demoMod
 	a3clipPoolCreate(&demoMode->clipPool, 1);
 
 	//initialize individual clips here
-	a3clipInit(&demoMode->clipPool.clip[0], "testClip", &demoMode->keyPool, 10, 0, 3);
+	a3clipInit(&demoMode->clipPool.clips[0], "testClip", &demoMode->keyPool, 10, 0, 3);
 	
 
 	//creating and initializing the keyframes and clips from the file
