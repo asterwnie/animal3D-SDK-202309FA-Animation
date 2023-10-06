@@ -58,7 +58,7 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 	a3_Keyframe* currKeyframe = &currClip->pool->keyframes[clipCtrl->keyframe];
 
 	//char arrays to store the terminus action and the clip to transition to (if any)
-	a3byte terminusAction[a3keyframeAnimation_nameLenMax];
+	//a3byte terminusAction[a3keyframeAnimation_nameLenMax];
 	a3byte next[a3keyframeAnimation_nameLenMax];
 
 
@@ -76,14 +76,9 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 			// if playhead is past this clip, perform a terminus action
 			if (clipCtrl->clip >= clipCtrl->_clipPool->count)
 			{
-				//read the terminus action from currClip
-				if (!sscanf(currClip->terminus, "%s %s", &terminusAction, &next))
-				{
-					//reading from terminus failed
-				}
 				if (next == "") //no clip name given, perform terminus action on current clip
 				{
-					a3HandleTerminus(clipCtrl, currClip, terminusAction);
+					a3HandleTerminus(clipCtrl, currClip, currClip->terminus);
 				}
 				else //clip name given, find the associated clip and perform terminus action with it
 				{
@@ -94,23 +89,16 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 						if (clipCtrl->_clipPool->clips[counter].name == next)
 						{
 							newClip = &clipCtrl->_clipPool->clips[counter];
-							break;
+							a3HandleTerminus(clipCtrl, newClip, currClip->terminus);
 						}
 					}
-
-					a3HandleTerminus(clipCtrl, newClip, terminusAction);
-
 				}
 				return 1;
-
 			}
 
-
+			clipCtrl->clipTime -= currClip->duration; // calculate the time in the next clip
+			currClip = &clipCtrl->_clipPool->clips[clipCtrl->clip]; //update our current clip pointer
 		}
-
-		clipCtrl->clipTime -= currClip->duration; // calculate the time in the next clip
-		currClip = &clipCtrl->_clipPool->clips[clipCtrl->clip]; //update our current clip pointer
-
 	}
 
 	// IF PLAYHEAD MOVED BACKWARD

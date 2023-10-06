@@ -80,7 +80,7 @@ a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3u
 
 	keyframe_out->keyframeDuration = duration;
 	keyframe_out->invDuration = 1.0f / duration;
-	keyframe_out->keyData;
+	memcpy(keyframe_out->keyData, value_x, sizeof(a3ui32) * 4);
 
 	return 1;
 }
@@ -116,14 +116,18 @@ a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_na
 
 
 	clip_out->first = firstKeyframeIndex;
+	clip_out->index = firstKeyframeIndex;
 	clip_out->last = finalKeyframeIndex;
 
 	//memcpy(clip_out->pool, keyframePool, sizeof(a3_KeyframePool*));
 	clip_out->pool = (a3_KeyframePool*)malloc(sizeof(a3_KeyframePool));
 	clip_out->pool->keyframes = keyframePool->keyframes;
+	clip_out->keyframeCount = keyframePool->count;
 
 	clip_out->duration = (a3real)clipDuration;
 	clip_out->invDuration = 1 / clip_out->duration;
+
+	clip_out->terminus = '|';
 
 	return 1;
 }
