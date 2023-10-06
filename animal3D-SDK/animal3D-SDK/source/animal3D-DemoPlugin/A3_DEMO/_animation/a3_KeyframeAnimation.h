@@ -131,7 +131,7 @@ struct a3_Clip
 	a3_KeyframePool* pool;
 
 	//the terminus action for the clip
-	a3byte terminus[a3keyframeAnimation_nameLenMax];
+	char terminus;
 };
 
 // group of clips

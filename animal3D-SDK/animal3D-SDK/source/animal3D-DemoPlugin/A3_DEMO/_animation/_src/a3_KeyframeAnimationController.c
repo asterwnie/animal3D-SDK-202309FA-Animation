@@ -72,9 +72,9 @@ a3i32 a3clipControllerInit(a3_ClipController* clipCtrl_out, const a3byte ctrlNam
 }
 
 //actionClip will either be currClip or the given clip in currClip->terminus, whether there is anything there or not
-a3i32 a3HandleTerminus(a3_ClipController* clipCtrl, a3_Clip* actionClip, a3byte terminus[a3keyframeAnimation_nameLenMax])
+a3i32 a3HandleTerminus(a3_ClipController* clipCtrl, a3_Clip* actionClip, char terminus)
 {
-	if (terminus == "|") //pause at the terminus, setting the clipTime to 1 or 0 depending on playback
+	if (terminus == '|') //pause at the terminus, setting the clipTime to 1 or 0 depending on playback
 	{
 		if (clipCtrl->playback == 1)
 		{
@@ -86,14 +86,11 @@ a3i32 a3HandleTerminus(a3_ClipController* clipCtrl, a3_Clip* actionClip, a3byte 
 		}
 		clipCtrl->playback = 0;
 	}
-	else if (terminus == ">") //loop from the start (first frame indluced
+	else if (terminus == '>') //loop from the start (first frame included)
 	{
 		clipCtrl->playback = 1;
 	}
-
-
 	return 1;
-
 }
 
 

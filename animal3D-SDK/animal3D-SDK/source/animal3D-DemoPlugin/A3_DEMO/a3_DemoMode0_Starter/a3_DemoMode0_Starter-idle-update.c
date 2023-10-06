@@ -108,8 +108,7 @@ void a3starter_update(a3_DemoState* demoState, a3_DemoMode0_Starter* demoMode, a
 	printf("Current Clip Index: %i\n", (&demoMode->clipCtrl)->clip);
 	printf("Clip Time: %f\n", (&demoMode->clipCtrl)->clipTime);
 	printf("Normalized Clip Time: %f\n", (&demoMode->clipCtrl)->clipParameter);
-
-	printf("Current Keyframe Index: %f\n" + (&demoMode->clipCtrl)->keyframe);
+	printf("Current Keyframe Index: %i\n", (&demoMode->clipCtrl)->keyframe);
 	printf("Keyframe Time: %f\n", (&demoMode->clipCtrl)->keyframeTime);
 	printf("Normalized Keyframe Time: %f\n", (&demoMode->clipCtrl)->keyframeParameter);
 	
