@@ -26,19 +26,35 @@
 #ifndef __ANIMAL3D_KEYFRAMEANIMATION_INL
 #define __ANIMAL3D_KEYFRAMEANIMATION_INL
 
+/*
+=========================================
+File: a3_KeyframeAnimationController.inl
+Purpose: Give functionality to the Clip Controller's Update function
+Author(s) and Contribution(s):
+-Aster Nie: Function definitions.
+Date:   10/5/2023
+=========================================
+*/
 
 //-----------------------------------------------------------------------------
 
 // calculate clip duration as sum of keyframes' durations
 inline a3i32 a3clipCalculateDuration(a3_Clip* clip)
 {
-	return -1;
+	a3real duration = 0;
+	for (a3ui32 i = 0; i < clip->pool->count; ++i)
+	{
+		duration += clip->pool->keyframes[i].keyframeDuration;
+	}
+	return (a3i32)duration;
 }
 
 // calculate keyframes' durations by distributing clip's duration
 inline a3i32 a3clipDistributeDuration(a3_Clip* clip, const a3real newClipDuration)
 {
-	return -1;
+	a3real keyframeDuration = 0;
+	keyframeDuration = newClipDuration / clip->pool->count;
+	return (a3i32)keyframeDuration;
 }
 
 

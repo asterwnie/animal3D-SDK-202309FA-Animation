@@ -28,8 +28,11 @@ File: a3_KeyframeAnimation.c
 Purpose: Establish the data structures of Keyframes, Keyframe Pools, Clips, and Clip Pools, and have constructors so they can be used elsewhere
 Author(s) and Contribution(s):
 -Tommy Wagner: Filled out the constructors, initializers, and destructors for the data structures
+Date:   9/14/2023
 -Aster Nie: Bug fixing
 Date:   9/14/2023
+-Aster Nie: Fixing memory allocation errors and nullptrs.
+Date:   10/5/2023
 =========================================
 */
 
@@ -37,8 +40,10 @@ Date:   9/14/2023
 //#include "../a3_KeyframeAnimation.h"
 #include "A3_DEMO/_animation/a3_KeyframeAnimation.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 
 // macros to help with names
 #define A3_CLIP_DEFAULTNAME		("unnamed clip")
@@ -50,19 +55,14 @@ Date:   9/14/2023
 // allocate keyframe pool
 a3i32 a3keyframePoolCreate(a3_KeyframePool* keyframePool_out, const a3ui32 count)
 {
-//	if (keyframePool_out == 0)
-	//	return -1;
-
-	//keyframePool_out->keyframe = (...)malloc(...);
-
-	//keyframePool_out = (a3_KeyframePool*)malloc(sizeof(a3_KeyframePool));
 	if (!keyframePool_out) return -1;
 
-	keyframePool_out->keyframe = malloc(count * sizeof(a3_Keyframe));
-	if (!keyframePool_out->keyframe) return -1;
+	const size_t sz = count * sizeof(a3_Keyframe);
+	void* memory = malloc(sz);
+	keyframePool_out->keyframes = (a3_Keyframe*)memory;
 
 	keyframePool_out->count = count;
-	return 0;
+	return 1;
 }
 
 // release keyframe pool
@@ -70,7 +70,7 @@ a3i32 a3keyframePoolRelease(a3_KeyframePool* keyframePool)
 {
 	free(keyframePool);
 
-	return 0;
+	return 1;
 }
 
 // initialize keyframe
@@ -82,7 +82,7 @@ a3i32 a3keyframeInit(a3_Keyframe* keyframe_out, const a3real duration, const a3u
 	keyframe_out->invDuration = 1.0f / duration;
 	keyframe_out->keyData;
 
-	return 0;
+	return 1;
 }
 
 
@@ -91,9 +91,10 @@ a3i32 a3clipPoolCreate(a3_ClipPool* clipPool_out, const a3ui32 count)
 {
 	if (!clipPool_out) return -1;
 
-	clipPool_out->clip = malloc(count * sizeof(a3_Clip));
+	const size_t sz = sizeof(a3_Clip) * count;
+	void* memory = malloc(sz);
 
-	if (!clipPool_out->clip) return -1;
+	clipPool_out->clip = (a3_Clip*)memory;
 
 	clipPool_out->count = count;
 	return 0;
@@ -113,26 +114,18 @@ a3i32 a3clipInit(a3_Clip* clip_out, const a3byte clipName[a3keyframeAnimation_na
 	
 	memcpy(clip_out->name, clipName, sizeof(clip_out->name));
 
+
 	clip_out->first = firstKeyframeIndex;
 	clip_out->last = finalKeyframeIndex;
 
-	clip_out->pool = keyframePool; 
+	//memcpy(clip_out->pool, keyframePool, sizeof(a3_KeyframePool*));
+	clip_out->pool = (a3_KeyframePool*)malloc(sizeof(a3_KeyframePool));
+	clip_out->pool->keyframes = keyframePool->keyframes;
 
-
-	//goes through each keyframe in the pool and finds the total duration
-	/*
-	a3real sum = 0;
-	
-	for(a3ui32 i = clip_out->first; i <= clip_out->last; i++)
-	{
-		sum += clip_out->pool->keyframe[i].keyframeDuration;
-	}
-	clip_out->duration = sum;
-	*/
-	clip_out->duration = clipDuration;
+	clip_out->duration = (a3real)clipDuration;
 	clip_out->invDuration = 1 / clip_out->duration;
 
-	return 0;
+	return 1;
 }
 
 // get clip index from pool
@@ -173,23 +166,26 @@ a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[256], a3_Keyfram
 		for (int rows = 0; rows < 8; rows++)
 		{
 			a3ui32 spriteData[4] = {64*rows, 64*col, 64, 64};
-			a3keyframeInit(&keyPool->keyframe[col*8+rows], 1, spriteData); //will go left to right, top to bottom on sprite sheet
+			a3keyframeInit(&keyPool->keyframes[col*8+rows], 1, spriteData); //will go left to right, top to bottom on sprite sheet
 		}
 	}
 
 	//the file that contains the clip information
 	FILE* myFile = fopen(clipFile, "r");
+	if (myFile == NULL) { return -1; }
 
 	//the first character of the line, will be @ if it is one that should be read
-	a3byte check[1];
+	//a3byte check[1];
 
-	//the number of valid lines, or the number of clips in the pool
+	// count the number of valid lines, or the number of clips in the pool
 	int clipCount = 0;
+	a3byte line[256];
+	char firstChar = '@';
 
 	while (!feof(myFile))
 	{
-		fgets(check, 1, myFile); //read the first char into the buffer
-		if (check == '@')
+		fgets(line, 256, myFile);
+		if (line[0] == firstChar) // read line into buffer
 		{
 			clipCount++;
 		}
@@ -237,6 +233,8 @@ a3i32 a3clipPoolFileInit(a3_ClipPool* clipPool, a3byte clipFile[256], a3_Keyfram
 	}
 
 	fclose(myFile);
+
+	return 1;
 }
 
 

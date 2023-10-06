@@ -55,7 +55,7 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 	clipCtrl->keyframeTime += dt * clipCtrl->playback; 	
 
 	a3_Clip* currClip = &clipCtrl->_clipPool->clip[clipCtrl->clip];
-	a3_Keyframe* currKeyframe = &currClip->pool->keyframe[clipCtrl->keyframe];
+	a3_Keyframe* currKeyframe = &currClip->pool->keyframes[clipCtrl->keyframe];
 	
 	//char arrays to store the terminus action and the clip to transition to (if any)
 	a3byte terminusAction[a3keyframeAnimation_nameLenMax];
@@ -100,7 +100,7 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 			//clipCtrl->clip = clipCtrl->_clipPool->count; // no loop (stop)
 			// loop...
 			// ping-pong...
-			return 0;
+			return 1;
 		}
 
 		clipCtrl->clipTime -= currClip->duration; // calculate the time in the next clip
@@ -110,7 +110,7 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 		{
 			clipCtrl->keyframe++; // go to the next keyframe
 			clipCtrl->keyframeTime -= currKeyframe->keyframeDuration; // calculate the time in the next keyframe
-			currKeyframe = &currClip->pool->keyframe[clipCtrl->keyframe]; // update our current keyframe pointer
+			currKeyframe = &currClip->pool->keyframes[clipCtrl->keyframe]; // update our current keyframe pointer
 		}
 	}
 
@@ -125,7 +125,7 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 			clipCtrl->clip = clipCtrl->_clipPool->count; // no loop (stop)
 			// loop...
 			// ping-pong...
-			return 0;
+			return 1;
 		}
 
 		clipCtrl->clipTime += currClip->duration; // calculate the time in the prev clip
@@ -135,7 +135,7 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 		{
 			clipCtrl->keyframe--; // go to the previous keyframe
 			clipCtrl->keyframeTime += currKeyframe->keyframeDuration; // calculate the time in the prev keyframe
-			currKeyframe = &currClip->pool->keyframe[clipCtrl->keyframe]; // update our current keyframe pointer
+			currKeyframe = &currClip->pool->keyframes[clipCtrl->keyframe]; // update our current keyframe pointer
 		}
 	}
 
@@ -153,7 +153,7 @@ inline a3i32 a3clipControllerUpdate(a3_ClipController* clipCtrl, const a3real dt
 
 	// extra (above and beyond: call some event when this happens, do terminus actions, etc.
 
-	return 0;
+	return 1;
 }
 
 // set clip to play
@@ -165,7 +165,7 @@ inline a3i32 a3clipControllerSetClip(a3_ClipController* clipCtrl, const a3_ClipP
 	//clipCtrl->clipPool = clipPool;
 	clipCtrl->clip = clipIndex_pool;
 
-	return 0;
+	return 1;
 }
 
 

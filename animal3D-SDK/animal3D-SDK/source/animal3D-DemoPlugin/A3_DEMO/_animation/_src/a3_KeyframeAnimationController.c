@@ -25,6 +25,7 @@
 #include "../a3_KeyframeAnimationController.h"
 
 #include <string.h>
+#include <stdlib.h> 
 
 
 /*
@@ -51,13 +52,11 @@ a3i32 a3clipControllerInit(a3_ClipController* clipCtrl_out, const a3byte ctrlNam
 	}
 	//setting the controller's name
 	memcpy(clipCtrl_out->name, ctrlName, sizeof(clipCtrl_out->name));
+
+	clipCtrl_out->_clipPool = (a3_ClipPool*)malloc(sizeof(a3_ClipPool));
 	
-
-
 	//setting the clip pool being controlled
-	clipCtrl_out->_clipPool = clipPool;
-
-
+	clipCtrl_out->_clipPool->clip = clipPool->clip;
 	//setting the index of the clip currently accessed
 	clipCtrl_out->clip = clipIndex_pool;
 	//should be starting with the first keyframe
@@ -89,7 +88,7 @@ a3i32 a3HandleTerminus(a3_ClipController* clipCtrl, a3_Clip* actionClip, a3byte 
 	}
 
 
-
+	return 1;
 
 }
 
