@@ -65,6 +65,7 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 		{
 			if (poseGroup_out->hPose)
 			{
+				//this might be wrong
 				poseGroup_out->hPose[i].spatialPose = (a3_SpatialPose*)(poseBase + i);
 			}
 		}
@@ -123,12 +124,30 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 
 		void* memory = malloc(sz);
 
+		if (!memory)
+		{
+			return -1;
+		}
+
 		state_out->objectSpace = (a3_HierarchyPose*)memory;
 		state_out->localSpace = (a3_HierarchyPose*)(state_out->objectSpace + hierarchy->numNodes);
 		state_out->objectSpaceBindToCurrent = (a3_HierarchyPose*)(state_out->localSpace + hierarchy->numNodes);
 
 		// set pointers
 		state_out->hierarchy = hierarchy;
+		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
+		{
+			state_out->objectSpace->spatialPose = (a3_SpatialPose*)state_out->objectSpace + i;
+		}
+		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
+		{
+			state_out->localSpace->spatialPose = (a3_SpatialPose*)state_out->localSpace + i;
+		}
+		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
+		{
+			state_out->objectSpaceBindToCurrent->spatialPose = (a3_SpatialPose*)state_out->objectSpaceBindToCurrent + i;
+		}
+
 
 		// reset all data
 		//...
