@@ -137,7 +137,7 @@ inline a3i32 a3hierarchyPoseCopy(const a3_HierarchyPose* pose_out, const a3_Hier
 	{
 		for (a3ui32 i = 0; i < nodeCount; i++)
 		{
-			pose_out.spatialPose[i] = pose_in.spatialPose[i];
+			pose_out->spatialPose[i] = pose_in->spatialPose[i];
 		}
 		return 1;
 	}

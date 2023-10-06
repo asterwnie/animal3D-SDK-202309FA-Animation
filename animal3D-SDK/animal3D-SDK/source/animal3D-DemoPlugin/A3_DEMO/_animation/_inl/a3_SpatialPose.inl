@@ -40,7 +40,11 @@ inline a3i32 a3spatialPoseCreate(a3_SpatialPose* spatialPose)
 		spatialPose->rotation = (a3vec3){ 0, 0, 0 };
 		spatialPose->scale = (a3vec3){ 1, 1, 1 };
 		spatialPose->position = (a3vec3){ 0, 0, 0 };
+
+		return 1;
 	}
+
+	return -1;
 }
 
 // set rotation values for a single node pose

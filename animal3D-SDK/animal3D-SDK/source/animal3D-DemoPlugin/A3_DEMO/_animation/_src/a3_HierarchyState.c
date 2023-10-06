@@ -42,9 +42,9 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 		// allocate everything (one malloc)
 		const size_t sz =
 			sizeof(a3_HierarchyPose) * poseCount
-			+ sizeof(a3_SpatialPose) * poseCount * hierarchy->numNodes
-			+ sizeof(a3_SpatialPoseChannel) * poseCount
-			+ sizeof(a3_SpatialPoseEulerOrder);
+			+ sizeof(a3_SpatialPose) * poseCount * hierarchy->numNodes;
+		//	+ sizeof(a3_SpatialPoseChannel) * hierarchy->numNodes
+		//	+ sizeof(a3_SpatialPoseEulerOrder) * hierarchy->numNodes;
 
 		void* memory = malloc(sz);
 
@@ -55,19 +55,15 @@ a3i32 a3hierarchyPoseGroupCreate(a3_HierarchyPoseGroup *poseGroup_out, const a3_
 		//starting address for spatial poses
 		a3_SpatialPose* poseBase = (a3_SpatialPose*)(hPoseBase + poseCount);
 		//starting address for channels
-		poseGroup_out->channel = (a3_SpatialPoseChannel*)(poseBase + poseCount * hierarchy->numNodes); // this might be wrong
+		//poseGroup_out->channel = (a3_SpatialPoseChannel*)(poseBase + poseCount * hierarchy->numNodes); // this might be wrong
 		// starting address for order
-		poseGroup_out->order = (a3_SpatialPoseEulerOrder*)(poseGroup_out->channel + poseCount);
+		//poseGroup_out->order = (a3_SpatialPoseEulerOrder*)(poseGroup_out->channel + poseCount);
 
 		//link them together; each hPose should get 'numNodes' spatial poses
 		poseGroup_out->hPose = hPoseBase;
-		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
+		for (a3ui32 i = 0; i < poseCount; i++)
 		{
-			if (poseGroup_out->hPose)
-			{
-				//this might be wrong
-				poseGroup_out->hPose[i].spatialPose = (a3_SpatialPose*)(poseBase + i);
-			}
+			poseGroup_out->hPose[i].spatialPose = (a3_SpatialPose*)(poseBase + i * hierarchy->numNodes);
 		}
 
 		// reset all data
@@ -95,8 +91,8 @@ a3i32 a3hierarchyPoseGroupRelease(a3_HierarchyPoseGroup *poseGroup)
 		poseGroup->hPose = 0;
 		poseGroup->order = 0;
 		poseGroup->poseCount = 0;
-		poseGroup.spatialPoseCount = 0;
-		poseGroup.spatialPoses = 0;
+		poseGroup->spatialPoseCount = 0;
+		poseGroup->spatialPoses = 0;
 
 		// done
 		return 1;
@@ -131,9 +127,9 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		//state_out->objectSpaceBindToCurrent = (a3_HierarchyPose*)(&(state_out->localSpace) + hierarchy->numNodes);
 		
 		// initialize hierarchy poses
-		state_out->objectSpace = (a3_HierarchyPose){ state_out->objectSpace.spatialPose = (a3_HierarchyPose*)memory };
-		state_out->localSpace = (a3_HierarchyPose){ state_out->objectSpace.spatialPose = &(state_out->objectSpace) + hierarchy->numNodes };
-		state_out->objectSpaceBindToCurrent = (a3_HierarchyPose){ state_out->objectSpace.spatialPose = &(state_out->localSpace) + hierarchy->numNodes };
+		state_out->objectSpace = (a3_HierarchyPose){ state_out->objectSpace.spatialPose = (a3_SpatialPose*)memory };
+		state_out->localSpace = (a3_HierarchyPose){ state_out->objectSpace.spatialPose = (a3_SpatialPose*)( & (state_out->objectSpace) + hierarchy->numNodes) };
+		state_out->objectSpaceBindToCurrent = (a3_HierarchyPose){ state_out->objectSpace.spatialPose = (a3_SpatialPose*)( & (state_out->localSpace) + hierarchy->numNodes) };
 
 		// set pointers
 		state_out->hierarchy = hierarchy;
@@ -183,13 +179,13 @@ a3i32 a3hierarchyStateRelease(a3_HierarchyState *state)
 	if (state && state->hierarchy)
 	{
 		// release everything (one free)
-		free(state->objectSpace);
+		free(state->objectSpace.spatialPose);
 
 		// reset pointers
 		state->hierarchy = 0;
-		state->localSpace = 0;
-		state->objectSpace = 0;
-		state->objectSpaceBindToCurrent = 0;
+		state->localSpace.spatialPose = 0;
+		state->objectSpace.spatialPose = 0;
+		state->objectSpaceBindToCurrent.spatialPose = 0;
 
 		// done
 		return 1;
