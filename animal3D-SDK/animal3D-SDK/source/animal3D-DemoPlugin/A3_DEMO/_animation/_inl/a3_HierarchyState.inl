@@ -59,7 +59,7 @@ inline a3i32 a3hierarchyPoseReset(const a3_HierarchyPose* pose_inout, const a3ui
 	{
 		for (a3ui32 i = 0; i < nodeCount; ++i)
 		{
-			//pose_inout->spatialPose = ???;
+			//(*pose_inout).spatialPose = ???;
 		}
 	}
 	return -1;
@@ -85,20 +85,20 @@ inline a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3
 			/*
 			//getting the TRS matrices to multiply, probably not the best method but i cant find anything build already
 			a3mat4 transMat = { 0, 0, 0, 1,
-								0, 0, 1, pose_inout->spatialPose[i].position.z,
-								0, 1, 0, pose_inout->spatialPose[i].position.y,
-								1, 0, 0, pose_inout->spatialPose[i].position.x };
+								0, 0, 1, (*pose_inout).spatialPose[i].position.z,
+								0, 1, 0, (*pose_inout).spatialPose[i].position.y,
+								1, 0, 0, (*pose_inout).spatialPose[i].position.x };
 
 			a3mat4 rotXMat = { 1, 0, 0, 0,
-								0, a3cosd(pose_inout->spatialPose[i].rotation.x), -a3sind(pose_inout->spatialPose[i].rotation.x), 0,
-								0, a3sind(pose_inout->spatialPose[i].rotation.x), a3cosd(pose_inout->spatialPose[i].rotation.x), 0,
+								0, a3cosd((*pose_inout).spatialPose[i].rotation.x), -a3sind((*pose_inout).spatialPose[i].rotation.x), 0,
+								0, a3sind((*pose_inout).spatialPose[i].rotation.x), a3cosd((*pose_inout).spatialPose[i].rotation.x), 0,
 								0, 0, 0, 1 };
-			a3mat4 rotYMat = { a3cosd(pose_inout->spatialPose[i].rotation.y), 0, a3sind(pose_inout->spatialPose[i].rotation.y), 0,
+			a3mat4 rotYMat = { a3cosd((*pose_inout).spatialPose[i].rotation.y), 0, a3sind((*pose_inout).spatialPose[i].rotation.y), 0,
 								0, 1, 0, 0,
-								-a3sind(pose_inout->spatialPose[i].rotation.y), 0, a3cosd(pose_inout->spatialPose[i].rotation.y), 0,
+								-a3sind((*pose_inout).spatialPose[i].rotation.y), 0, a3cosd((*pose_inout).spatialPose[i].rotation.y), 0,
 								0, 0, 0, 1 };
-			a3mat4 rotZMat = { a3cosd(pose_inout->spatialPose[i].rotation.z), -a3sind(pose_inout->spatialPose[i].rotation.z), 0, 0,
-								a3sind(pose_inout->spatialPose[i].rotation.z), a3cosd(pose_inout->spatialPose[i].rotation.z), 1, 0,
+			a3mat4 rotZMat = { a3cosd((*pose_inout).spatialPose[i].rotation.z), -a3sind((*pose_inout).spatialPose[i].rotation.z), 0, 0,
+								a3sind((*pose_inout).spatialPose[i].rotation.z), a3cosd((*pose_inout).spatialPose[i].rotation.z), 1, 0,
 								0, 0, 1, 0,
 								0, 0, 0, 1 };
 
@@ -108,21 +108,21 @@ inline a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3
 			a3real4x4Product(rotMat.m, rotXYMat.m, rotZMat.m);
 
 
-			a3mat4 scaleMat = { pose_inout->spatialPose[i].scale.x, 0, 0, 0,
-									0, pose_inout->spatialPose[i].scale.y, 0, 0,
-									0, 0, pose_inout->spatialPose[i].scale.z, 0,
+			a3mat4 scaleMat = { (*pose_inout).spatialPose[i].scale.x, 0, 0, 0,
+									0, (*pose_inout).spatialPose[i].scale.y, 0, 0,
+									0, 0, (*pose_inout).spatialPose[i].scale.z, 0,
 									0, 0, 0, 1 };
 
 
 			a3mat4 posRotMat; //can only multiply 2 matrices at a time, doing (pos * rot) * scale
 			a3real4x4Product(posRotMat.m, transMat.m, rotMat.m);
 			//final result of the transform matrix
-			a3real4x4Product(pose_inout->spatialPose[i].transform.m, posRotMat.m, scaleMat.m);
+			a3real4x4Product((*pose_inout).spatialPose[i].transform.m, posRotMat.m, scaleMat.m);
 			*/
 			
 			//multiplying the transform by the "change" (no change because we just want base pose, so just identity matrix)
-			a3real4x4Product(pose_inout->spatialPose[i].transform.m,
-				pose_inout->spatialPose[i].transform.m,
+			a3real4x4Product((*pose_inout).spatialPose[i].transform.m,
+				(*pose_inout).spatialPose[i].transform.m,
 				identity.m);
 		}
 		return 1;
@@ -137,7 +137,7 @@ inline a3i32 a3hierarchyPoseCopy(const a3_HierarchyPose* pose_out, const a3_Hier
 	{
 		for (a3ui32 i = 0; i < nodeCount; i++)
 		{
-			pose_out->spatialPose[i] = pose_in->spatialPose[i];
+			pose_out.spatialPose[i] = pose_in.spatialPose[i];
 		}
 		return 1;
 	}

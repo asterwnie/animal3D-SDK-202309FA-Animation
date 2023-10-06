@@ -95,8 +95,8 @@ a3i32 a3hierarchyPoseGroupRelease(a3_HierarchyPoseGroup *poseGroup)
 		poseGroup->hPose = 0;
 		poseGroup->order = 0;
 		poseGroup->poseCount = 0;
-		poseGroup->spatialPoseCount = 0;
-		poseGroup->spatialPoses = 0;
+		poseGroup.spatialPoseCount = 0;
+		poseGroup.spatialPoses = 0;
 
 		// done
 		return 1;
@@ -124,40 +124,30 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 
 		// starting addresses
 		// ** ADJUST THESE now that they're not pointers!! the spatial poses ARE the pointers tho
+		//state_out = (a3_HierarchyState*)memory;
 
-		state_out->objectSpace = (a3_HierarchyPose*)memory;
-		state_out->localSpace = (a3_HierarchyPose*)(state_out->objectSpace + hierarchy->numNodes);
-		state_out->objectSpaceBindToCurrent = (a3_HierarchyPose*)(state_out->localSpace + hierarchy->numNodes);
+		//state_out->objectSpace = state_out;
+		//state_out->localSpace = (a3_HierarchyPose*)(&(state_out->objectSpace) + hierarchy->numNodes);
+		//state_out->objectSpaceBindToCurrent = (a3_HierarchyPose*)(&(state_out->localSpace) + hierarchy->numNodes);
+		
+		// initialize hierarchy poses
+		state_out->objectSpace = (a3_HierarchyPose){ state_out->objectSpace.spatialPose = (a3_HierarchyPose*)memory };
+		state_out->localSpace = (a3_HierarchyPose){ state_out->objectSpace.spatialPose = &(state_out->objectSpace) + hierarchy->numNodes };
+		state_out->objectSpaceBindToCurrent = (a3_HierarchyPose){ state_out->objectSpace.spatialPose = &(state_out->localSpace) + hierarchy->numNodes };
 
 		// set pointers
 		state_out->hierarchy = hierarchy;
 
-/*
-		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
-		{
-			state_out->objectSpace->spatialPose = (a3_SpatialPose*)state_out->objectSpace + i;
-		}
-		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
-		{
-			state_out->localSpace->spatialPose = (a3_SpatialPose*)state_out->localSpace + i;
-		}
-		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
-		{
-			state_out->objectSpaceBindToCurrent->spatialPose = (a3_SpatialPose*)state_out->objectSpaceBindToCurrent + i;
-		}
-*/
-
-		// go through each spatial poses
-
-
-		// reset all data
+		// go through all of the objects in object/local/etc. and figure out the address of the array
+		// and add it to each one
+		// ^ do the same thing for the pose group
 
 		// object space
 		for (a3ui32 i = 0; i < hierarchy->numNodes; ++i)
 		{
 			// calc address of spatial pose array
-			state_out->objectSpace->spatialPose[i] = (a3_SpatialPose*)(state_out->objectSpace + i);
-			a3spatialPoseCreate(&(state_out->objectSpace->spatialPose[i]));
+			//state_out->objectSpace.spatialPose[i] = (a3_SpatialPose*)(&(state_out->objectSpace) + i);
+			a3spatialPoseCreate(&(state_out->objectSpace.spatialPose[i]));
 			// assign to pointer in hierarchy pose
 		}
 
@@ -165,8 +155,8 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		for (a3ui32 i = 0; i < hierarchy->numNodes; ++i)
 		{
 			// calc address of spatial pose array
-			state_out->localSpace->spatialPose[i] = (a3_SpatialPose*)(state_out->localSpace + i);
-			a3spatialPoseCreate(&(state_out->localSpace->spatialPose[i]));
+			//state_out->localSpace.spatialPose[i] = (a3_SpatialPose*)(&(state_out->localSpace) + i);
+			a3spatialPoseCreate(&(state_out->localSpace.spatialPose[i]));
 			// assign to pointer in hierarchy pose
 		}
 
@@ -174,14 +164,10 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		for (a3ui32 i = 0; i < hierarchy->numNodes; ++i)
 		{
 			// calc address of spatial pose array
-			state_out->objectSpaceBindToCurrent->spatialPose[i] = (a3_SpatialPose*)(state_out->objectSpaceBindToCurrent + i);
-			a3spatialPoseCreate(&(state_out->objectSpaceBindToCurrent->spatialPose[i]));
+			//state_out->objectSpaceBindToCurrent.spatialPose[i] = (a3_SpatialPose*)(&(state_out->objectSpaceBindToCurrent) + i);
+			a3spatialPoseCreate(&(state_out->objectSpaceBindToCurrent.spatialPose[i]));
 			// assign to pointer in hierarchy pose
 		}
-
-		// go through all of the objects in object/local/etc. and figure out the address of the array
-		// and add it to each one
-		// ^ do the same thing for the pose group
 
 		// done
 		return 1;
