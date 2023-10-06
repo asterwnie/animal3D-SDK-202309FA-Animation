@@ -87,7 +87,6 @@ a3i32 a3hierarchyPoseGroupRelease(a3_HierarchyPoseGroup *poseGroup)
 	if (poseGroup && poseGroup->hierarchy)
 	{
 		// release everything (one free)
-		 // *****is this everything??
 		free(poseGroup->hPose);
 
 		// reset pointers
@@ -98,7 +97,6 @@ a3i32 a3hierarchyPoseGroupRelease(a3_HierarchyPoseGroup *poseGroup)
 		poseGroup->poseCount = 0;
 		poseGroup->spatialPoseCount = 0;
 		poseGroup->spatialPoses = 0;
-
 
 		// done
 		return 1;
@@ -124,10 +122,8 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 
 		void* memory = malloc(sz);
 
-		if (!memory)
-		{
-			return -1;
-		}
+		// starting addresses
+		// ** ADJUST THESE now that they're not pointers!! the spatial poses ARE the pointers tho
 
 		state_out->objectSpace = (a3_HierarchyPose*)memory;
 		state_out->localSpace = (a3_HierarchyPose*)(state_out->objectSpace + hierarchy->numNodes);
@@ -135,6 +131,8 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 
 		// set pointers
 		state_out->hierarchy = hierarchy;
+
+/*
 		for (a3ui32 i = 0; i < hierarchy->numNodes; i++)
 		{
 			state_out->objectSpace->spatialPose = (a3_SpatialPose*)state_out->objectSpace + i;
@@ -147,10 +145,43 @@ a3i32 a3hierarchyStateCreate(a3_HierarchyState *state_out, const a3_Hierarchy *h
 		{
 			state_out->objectSpaceBindToCurrent->spatialPose = (a3_SpatialPose*)state_out->objectSpaceBindToCurrent + i;
 		}
+*/
+
+		// go through each spatial poses
 
 
 		// reset all data
-		//...
+
+		// object space
+		for (a3ui32 i = 0; i < hierarchy->numNodes; ++i)
+		{
+			// calc address of spatial pose array
+			state_out->objectSpace->spatialPose[i] = (a3_SpatialPose*)(state_out->objectSpace + i);
+			a3spatialPoseCreate(&(state_out->objectSpace->spatialPose[i]));
+			// assign to pointer in hierarchy pose
+		}
+
+		// localSpace space
+		for (a3ui32 i = 0; i < hierarchy->numNodes; ++i)
+		{
+			// calc address of spatial pose array
+			state_out->localSpace->spatialPose[i] = (a3_SpatialPose*)(state_out->localSpace + i);
+			a3spatialPoseCreate(&(state_out->localSpace->spatialPose[i]));
+			// assign to pointer in hierarchy pose
+		}
+
+		// objectSpaceBindToCurrent space
+		for (a3ui32 i = 0; i < hierarchy->numNodes; ++i)
+		{
+			// calc address of spatial pose array
+			state_out->objectSpaceBindToCurrent->spatialPose[i] = (a3_SpatialPose*)(state_out->objectSpaceBindToCurrent + i);
+			a3spatialPoseCreate(&(state_out->objectSpaceBindToCurrent->spatialPose[i]));
+			// assign to pointer in hierarchy pose
+		}
+
+		// go through all of the objects in object/local/etc. and figure out the address of the array
+		// and add it to each one
+		// ^ do the same thing for the pose group
 
 		// done
 		return 1;
@@ -166,7 +197,6 @@ a3i32 a3hierarchyStateRelease(a3_HierarchyState *state)
 	if (state && state->hierarchy)
 	{
 		// release everything (one free)
-		// *****is this everything??
 		free(state->objectSpace);
 
 		// reset pointers

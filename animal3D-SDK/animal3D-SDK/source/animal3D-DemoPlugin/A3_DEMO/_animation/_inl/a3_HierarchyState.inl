@@ -118,8 +118,8 @@ inline a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3
 			a3real4x4Product(posRotMat.m, transMat.m, rotMat.m);
 			//final result of the transform matrix
 			a3real4x4Product(pose_inout->spatialPose[i].transform.m, posRotMat.m, scaleMat.m);
-			
 			*/
+			
 			//multiplying the transform by the "change" (no change because we just want base pose, so just identity matrix)
 			a3real4x4Product(pose_inout->spatialPose[i].transform.m,
 				pose_inout->spatialPose[i].transform.m,
