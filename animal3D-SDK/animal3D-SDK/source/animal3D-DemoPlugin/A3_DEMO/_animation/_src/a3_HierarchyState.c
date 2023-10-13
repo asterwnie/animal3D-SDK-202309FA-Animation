@@ -294,7 +294,7 @@ a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hiera
 				spatialPose->rotation.y = ry;
 				spatialPose->rotation.z = rz;
 
-				// what do we do with bone length???
+				// we don't use bone length, ignore it
 			}
 			else
 			{
@@ -323,7 +323,7 @@ a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hiera
 				a3spatialPoseSetTranslation(spatialPose, tx, ty, tz);
 				a3spatialPoseSetRotation(spatialPose, rx, ry, rz);
 
-				// what do we do with bone length???
+				// we don't use bone length, ignore it
 			}
 		}
 

@@ -84,6 +84,7 @@ inline a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3
 		{
 			
 			//getting the TRS matrices to multiply, probably not the best method but i cant find anything build already
+			// should call a3spatialPoseConvert on each node instead - move this
 			/*
 			a3mat4 transMat = { 0, 0, 0, 1,
 								0, 0, 1, (*pose_inout).spatialPose[i].position.z,
@@ -169,15 +170,16 @@ inline a3i32 a3hierarchyPoseConcat(const a3_HierarchyPose* pose_out, const a3_Hi
 	a3ui32 i;
 	for (i = 0; i < nodeCount; ++i)
 	{
-		// this is the principle, but i don't know how to do the actual operations..
-		
-		/*
-		pose_out->spatialPose[i].transform = base_pose->spatialPose->transform + sample_pose->spatialPose->transform;
-		pose_out->spatialPose[i].position = base_pose->spatialPose->position + sample_pose->spatialPose->position;
-		pose_out->spatialPose[i].scale = base_pose->spatialPose->scale + sample_pose->spatialPose->scale;
-		pose_out->spatialPose[i].rotation = base_pose->spatialPose->rotation + sample_pose->spatialPose->rotation;
-		*/
+		// add positions
+		a3real3Sum(pose_out->spatialPose[i].position.v, base_pose->spatialPose->position.v, sample_pose->spatialPose->position.v);
 
+		// multiply scale
+		a3real3ProductComp(pose_out->spatialPose[i].scale.v, base_pose->spatialPose->scale.v, sample_pose->spatialPose->scale.v);
+
+		// add & turn into valid angles for rotation
+		pose_out->spatialPose[i].rotation.x = a3trigValid_sind(base_pose->spatialPose->rotation.x + sample_pose->spatialPose->rotation.x);
+		pose_out->spatialPose[i].rotation.y = a3trigValid_sind(base_pose->spatialPose->rotation.y + sample_pose->spatialPose->rotation.y);
+		pose_out->spatialPose[i].rotation.z = a3trigValid_sind(base_pose->spatialPose->rotation.z + sample_pose->spatialPose->rotation.z);
 	}
 
 	return 1;
