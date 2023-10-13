@@ -25,7 +25,9 @@
 #include "../a3_HierarchyState.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+
 
 
 //-----------------------------------------------------------------------------
@@ -197,14 +199,152 @@ a3i32 a3hierarchyStateRelease(a3_HierarchyState *state)
 // load HTR file, read and store complete pose group and hierarchy
 a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hierarchy* hierarchy_out, const a3byte* resourceFilePath)
 {
-	if (poseGroup_out && !poseGroup_out->poseCount && hierarchy_out && !hierarchy_out->numNodes && resourceFilePath && *resourceFilePath)
+	if (poseGroup_out && hierarchy_out && resourceFilePath)
 	{
-		a3ui32 j, p;
+		// pointers
+		//a3ui32 j, p;
 		a3_Hierarchy* hierarchy = hierarchy_out;
 		a3_HierarchyPoseGroup* hierarchyPoseGroup = poseGroup_out;
 		a3_SpatialPose* spatialPose = 0;
 
-		p = 0;
+		// indices of joints, their parents and branching joints
+		a3ui32 jointIndex = 0;
+		a3i32 jointParentIndex = -1;
+		a3i32 rootJointIndex;// upperSpineJointIndex, clavicleJointIndex, pelvisJointIndex;
+
+		// load the file
+		FILE* fptr;
+
+		fptr = fopen(resourceFilePath, "r");
+		if (fptr == NULL) return -1;
+
+		a3byte line[256];
+		a3byte commentChar = '#';
+		a3byte headerChar = '[';
+		a3byte attribute[256];
+		a3byte value[256];
+
+		while (!feof(fptr))
+		{
+			// keep reading lines
+			fgets(line, 256, fptr);
+			// skip comments
+			if (line[0] == commentChar) continue;
+
+			// check for headers
+			if (line[0] == headerChar)
+			{
+				sscanf(line, " %s", attribute);
+				if (attribute[0] == headerChar)
+				{
+					continue; // go to the next line to start processing
+				}
+			}
+
+			// handle each section based on their header
+
+			if (strcmp(attribute, "[Header]") == 0)
+			{
+				sscanf(line, " %s", value);
+
+				if (strcmp(value, "NumSegments") == 0)
+				{
+					a3ui32 numVal;
+
+					sscanf(line, "%s %d", value, &numVal);
+					hierarchy_out->numNodes = numVal;
+
+					// init hierarchy
+					a3hierarchyCreate(hierarchy, hierarchy_out->numNodes, 0);
+				}
+				continue;
+			}
+
+			if (strcmp(attribute, "[SegmentNames&Hierarchy]") == 0)
+			{
+				sscanf(line, " %s", value);
+
+				if (strcmp(value, "main") == 0) continue;
+
+				a3byte currNode[256];
+				a3byte parentNode[256];
+
+				// first value is the node
+				// second value is the parent
+				sscanf(line, "%s %s", currNode, parentNode);
+
+				// set the values
+				if(strcmp(parentNode, "main") == 0)
+					jointParentIndex = rootJointIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, currNode);
+				else
+					jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, currNode);
+				
+				continue;
+				//jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:spine_mid");
+			//	jointParentIndex = upperSpineJointIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:spine_upper");
+			}
+		}
+		
+
+		// THIS DOESn'T DO REAL LOADING!! I JUST COPY-PASTED WHAT WAS IN THE LOAD FUNCTION FOR REFERENCE
+		// // manually set up a skeleton
+		// first is the hierarchy: the general non-spatial relationship between bones
+		//const a3ui32 jointCount = 32;
+		/*
+		// indices of joints, their parents and branching joints
+		a3ui32 jointIndex = 0;
+		a3i32 jointParentIndex = -1;
+		a3i32 rootJointIndex, upperSpineJointIndex, clavicleJointIndex, pelvisJointIndex;
+
+		// initialize hierarchy
+		hierarchy = demoMode->hierarchy_skel;
+		a3hierarchyCreate(hierarchy, jointCount, 0);
+
+		// set up joint relationships
+		jointParentIndex = rootJointIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:root");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:spine_lower");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:spine_mid");
+		jointParentIndex = upperSpineJointIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:spine_upper");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:neck");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:head");
+		jointParentIndex = upperSpineJointIndex;
+		jointParentIndex = clavicleJointIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:clavicle");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:shoulderblade_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:shoulder_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:elbow_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:forearm_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:wrist_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:hand_r");
+		jointParentIndex = clavicleJointIndex;
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:shoulderblade_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:shoulder_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:elbow_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:forearm_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:wrist_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:hand_l");
+		jointParentIndex = rootJointIndex;
+		jointParentIndex = pelvisJointIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:pelvis");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:hip_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:knee_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:shin_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:ankle_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:foot_r");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:toe_r");
+		jointParentIndex = pelvisJointIndex;
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:hip_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:knee_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:shin_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:ankle_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:foot_l");
+		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:toe_l");
+
+		// save hierarchy assets
+		a3hierarchySaveBinary(hierarchy, fileStream);
+
+		// done
+		a3fileStreamClose(fileStream);
+
+		
 		j = a3hierarchyGetNodeIndex(hierarchy, "skel:root");
 		spatialPose = hierarchyPoseGroup->hPose[p].spatialPose + j;
 		a3spatialPoseSetTranslation(spatialPose, 0.0f, 0.0f, +3.6f);
@@ -396,7 +536,7 @@ a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hiera
 		j = a3hierarchyGetNodeIndex(hierarchy, "skel:root");
 		spatialPose = hierarchyPoseGroup->hPose[p].spatialPose + j;
 		a3spatialPoseSetTranslation(spatialPose, +3.0f, +4.0f, +5.0f);	// shift whole figure by some vector
-
+		*/
 
 	}
 	return -1;

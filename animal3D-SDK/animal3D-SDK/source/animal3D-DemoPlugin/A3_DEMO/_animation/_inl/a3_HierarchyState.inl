@@ -59,7 +59,7 @@ inline a3i32 a3hierarchyPoseReset(const a3_HierarchyPose* pose_inout, const a3ui
 	{
 		for (a3ui32 i = 0; i < nodeCount; ++i)
 		{
-			a3spatialPoseReset(pose_inout);
+			//a3spatialPoseReset(pose_inout);
 		}
 	}
 	return -1;
@@ -84,6 +84,7 @@ inline a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3
 		{
 			
 			//getting the TRS matrices to multiply, probably not the best method but i cant find anything build already
+			/*
 			a3mat4 transMat = { 0, 0, 0, 1,
 								0, 0, 1, (*pose_inout).spatialPose[i].position.z,
 								0, 1, 0, (*pose_inout).spatialPose[i].position.y,
@@ -118,7 +119,7 @@ inline a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3
 			a3real4x4Product(posRotMat.m, transMat.m, rotMat.m);
 			//final result of the transform matrix
 			a3real4x4Product((*pose_inout).spatialPose[i].transform.m, posRotMat.m, scaleMat.m);
-			
+			*/
 			
 			//multiplying the transform by the "change" (no change because we just want base pose, so just identity matrix)
 			a3real4x4Product((*pose_inout).spatialPose[i].transform.m,

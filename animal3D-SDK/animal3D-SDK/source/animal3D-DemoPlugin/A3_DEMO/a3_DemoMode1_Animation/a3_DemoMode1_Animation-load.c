@@ -39,7 +39,7 @@
 void a3animation_init_animation(a3_DemoState const* demoState, a3_DemoMode1_Animation* demoMode)
 {
 	// general counters
-	a3ui32 j, p;
+	//a3ui32 j, p;
 
 	// object pointers
 	a3_Hierarchy* hierarchy = 0;
@@ -63,6 +63,7 @@ void a3animation_init_animation(a3_DemoState const* demoState, a3_DemoMode1_Anim
 	// not streaming or stream doesn't exist
 	else if (!demoState->streaming || a3fileStreamOpenWrite(fileStream, geometryStream))
 	{
+		/*
 		// manually set up a skeleton
 		// first is the hierarchy: the general non-spatial relationship between bones
 		const a3ui32 jointCount = 32;
@@ -76,7 +77,7 @@ void a3animation_init_animation(a3_DemoState const* demoState, a3_DemoMode1_Anim
 		hierarchy = demoMode->hierarchy_skel;
 		a3hierarchyCreate(hierarchy, jointCount, 0);
 
-
+		
 		// set up joint relationships
 		jointParentIndex = rootJointIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:root");
 		jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:spine_lower");
@@ -120,8 +121,9 @@ void a3animation_init_animation(a3_DemoState const* demoState, a3_DemoMode1_Anim
 	
 		// done
 		a3fileStreamClose(fileStream);
+		*/
 	}
-
+	
 
 	// scene objects
 	demoMode->obj_skeleton->position.y = +a3real_four;
@@ -133,14 +135,14 @@ void a3animation_init_animation(a3_DemoState const* demoState, a3_DemoMode1_Anim
 	hierarchyPoseGroup = demoMode->hierarchyPoseGroup_skel;
 	hierarchyPoseGroup->hierarchy = 0;
 
-
+	/*
 	// allocate poses
 	//a3hierarchyPoseGroupCreate(hierarchyPoseGroup, hierarchy, 5, a3poseEulerOrder_xyz);
 	a3hierarchyPoseGroupCreate(hierarchyPoseGroup, hierarchy, 5);
 
 	// define "bind pose" or "base pose" or the initial transformation 
 	//	description for each joint (not a literal transform)
-	/*
+	
 	p = 0;
 	j = a3hierarchyGetNodeIndex(hierarchy, "skel:root");
 	spatialPose = hierarchyPoseGroup->hPose[p].spatialPose + j;
@@ -335,7 +337,6 @@ void a3animation_init_animation(a3_DemoState const* demoState, a3_DemoMode1_Anim
 	a3spatialPoseSetTranslation(spatialPose, +3.0f, +4.0f, +5.0f);	// shift whole figure by some vector
 	*/
 
-	//comment out the joint loading
 	// load from file
 	a3hierarchyPoseGroupLoadHTR(demoMode->hierarchyPoseGroup_skel, demoMode->hierarchy_skel,
 		"../../../../resource/animdata/egnaro/egnaro_skel_anim.htr");
