@@ -216,11 +216,11 @@ a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hiera
 		a3byte headerChar = '['; // denotes headers
 		a3byte attribute[256]; // used to hold headers
 		a3byte value[256]; // used to hold header values
-		a3ui32 numVal; // used to hold numerical values
+		a3ui32 numVal = 0; // used to hold numerical values
 
 		a3byte objName[256]; // used to hold node name
 		a3f32 tx, ty, tz, rx, ry, rz, boneLength; // position & rotation values
-		a3ui32 poseIndex; // which pose are we on?
+		a3ui32 poseIndex = 0; // which pose are we on?
 
 		while (!feof(fptr))
 		{
@@ -256,7 +256,6 @@ a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hiera
 					a3hierarchyPoseGroupCreate(poseGroup_out, hierarchy_out, numVal); // init poses
 				}
 			}
-
 			else if (strcmp(attribute, "[SegmentNames&Hierarchy]") == 0)
 			{
 				sscanf(line, " %s", value);
@@ -275,13 +274,7 @@ a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hiera
 					jointParentIndex = rootJointIndex = a3hierarchySetNode(hierarchy_out, jointIndex++, jointParentIndex, currNode);
 				else
 					jointParentIndex = a3hierarchySetNode(hierarchy_out, jointIndex++, jointParentIndex, currNode);
-				
-				// not sure what to do with these tbh
-
-				//jointParentIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:spine_mid");
-			//	jointParentIndex = upperSpineJointIndex = a3hierarchySetNode(hierarchy, jointIndex++, jointParentIndex, "skel:spine_upper");
 			}
-
 			else if (strcmp(attribute, "[BasePosition]") == 0)
 			{
 				//# ObjectName<tab>Tx<tab>Ty<tab>Tz<tab>Rx<tab>Ry<tab>Rz<tab>BoneLength<CR>
@@ -292,18 +285,17 @@ a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hiera
 				a3i32 nodeIndex = a3hierarchyGetNodeIndex(hierarchy_out, objName);
 
 				// set vals
-				//hPose[0] is the BASE pose
-				poseGroup_out->hPose[0].spatialPose[nodeIndex].position.x = tx;
-				poseGroup_out->hPose[0].spatialPose[nodeIndex].position.y = ty;
-				poseGroup_out->hPose[0].spatialPose[nodeIndex].position.z = tz;
+				a3_SpatialPose* spatialPose = &(poseGroup_out->hPose[poseIndex].spatialPose[nodeIndex]);
+				spatialPose->position.x = tx;
+				spatialPose->position.y = ty;
+				spatialPose->position.z = tz;
 
-				poseGroup_out->hPose[0].spatialPose[nodeIndex].rotation.x = rx;
-				poseGroup_out->hPose[0].spatialPose[nodeIndex].rotation.y = ry;
-				poseGroup_out->hPose[0].spatialPose[nodeIndex].rotation.z = rz;
+				spatialPose->rotation.x = rx;
+				spatialPose->rotation.y = ry;
+				spatialPose->rotation.z = rz;
 
 				// what do we do with bone length???
 			}
-
 			else
 			{
 				// the header must be a joint
