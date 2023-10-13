@@ -332,11 +332,11 @@ void a3animation_init_animation(a3_DemoState const* demoState, a3_DemoMode1_Anim
 	spatialPose = hierarchyPoseGroup->hPose[p].spatialPose + j;
 	a3spatialPoseSetTranslation(spatialPose, +3.0f, +4.0f, +5.0f);	// shift whole figure by some vector
 
-
+	/* // uncomment this and comment out the joint loading
 	// load from file
 	a3hierarchyPoseGroupLoadHTR(demoMode->hierarchyPoseGroup_skel, demoMode->hierarchy_skel,
 		"../../../../resource/animdata/egnaro/egnaro_skel_anim.htr");
-	
+	*/
 
 	// finally set up hierarchy states
 

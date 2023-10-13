@@ -37,6 +37,7 @@ inline a3i32 a3spatialPoseCreate(a3_SpatialPose* spatialPose)
 	if (spatialPose)
 	{
 		spatialPose->transform = a3mat4_identity;
+		a3real4x4SetIdentity(spatialPose->transform.m);
 		spatialPose->rotation = (a3vec3){ 0, 0, 0 };
 		spatialPose->scale = (a3vec3){ 1, 1, 1 };
 		spatialPose->position = (a3vec3){ 0, 0, 0 };
@@ -93,6 +94,7 @@ inline a3i32 a3spatialPoseReset(a3_SpatialPose* spatialPose)
 	{
 		// defaults: transform = identity, rotation channels = 0, scale components = +1, translation channels = 0
 		spatialPose->transform = a3mat4_identity;
+		a3real4x4SetIdentity(spatialPose->transform.m);
 		spatialPose->rotation = (a3vec3){ 0, 0, 0 };
 		spatialPose->scale = (a3vec3){ 1, 1, 1 };
 		spatialPose->position = (a3vec3){ 0, 0, 0 };

@@ -113,14 +113,14 @@ void a3animation_update(a3_DemoState* demoState, a3_DemoMode1_Animation* demoMod
 
 	// step 1: Calculate delta poses.
 	// can also copy instead of lerp (just jumps between poses)
-	//a3hierarchyPoseCopy(activeHS->objectSpace,
-	//	demoMode->hierarchyPoseGroup_skel->hpose + demoMode->hierarchyKeyPose_display[0] + 1,
-	//	demoMode->hierarchy_skel->numNodes);
-	a3hierarchyPoseLerp(&(activeHS->objectSpace),	// use as temp storage
+	a3hierarchyPoseCopy(&(activeHS->objectSpace),
+		demoMode->hierarchyPoseGroup_skel->hPose + demoMode->hierarchyKeyPose_display[0] + 1,
+		demoMode->hierarchy_skel->numNodes);
+	/*a3hierarchyPoseLerp(&(activeHS->objectSpace),	// use as temp storage
 		demoMode->hierarchyPoseGroup_skel->hPose + demoMode->hierarchyKeyPose_display[0] + 1,
 		demoMode->hierarchyPoseGroup_skel->hPose + demoMode->hierarchyKeyPose_display[1] + 1,
 		demoMode->hierarchyKeyPose_param,
-		demoMode->hierarchy_skel->numNodes);
+		demoMode->hierarchy_skel->numNodes);*/
 	a3hierarchyPoseConcat(&(activeHS->localSpace),	// goal to calculate
 		&(baseHS->localSpace), // holds base pose
 		&(activeHS->objectSpace), // temp storage
@@ -136,8 +136,8 @@ void a3animation_update(a3_DemoState* demoState, a3_DemoMode1_Animation* demoMod
 	a3kinematicsSolveForward(activeHS);
 
 	//don't need these rn
-	//a3hierarchyStateUpdateObjectInverse(activeHS); // used for skinning (not used in lab 2)
-	//a3hierarchyStateUpdateObjectBindToCurrent(activeHS, baseHS); // used for skinning (not used in lab 2)
+	//a3hierarchyStateUpdateObjectInverse(activeHS); // used for skinning
+	//a3hierarchyStateUpdateObjectBindToCurrent(activeHS, baseHS); // used for skinning
 
 
 	// prepare and upload graphics data
