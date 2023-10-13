@@ -47,6 +47,9 @@ a3_SpatialPose* a3spatialPoseOpIdentity(a3_SpatialPose* pose_out);
 // pointer-based LERP operation for single spatial pose
 a3_SpatialPose* a3spatialPoseOpLERP(a3_SpatialPose* pose_out, a3_SpatialPose const* pose0, a3_SpatialPose const* pose1, a3real const u);
 
+// add the rest of your operators here
+// ..........
+
 
 //-----------------------------------------------------------------------------
 
@@ -60,7 +63,7 @@ a3_SpatialPose a3spatialPoseDOpLERP(a3_SpatialPose const pose0, a3_SpatialPose c
 //-----------------------------------------------------------------------------
 
 // pointer-based reset/identity operation for hierarchical pose
-a3_HierarchyPose* a3hierarchyPoseOpIdentity(a3_HierarchyPose* pose_out);
+a3_HierarchyPose* a3hierarchyPoseOpIdentity(a3_HierarchyPose* pose_out);  // make sure to also pass in the hierarchy pointer (pass num nodes as an additional arg)
 
 // pointer-based LERP operation for hierarchical pose
 a3_HierarchyPose* a3hierarchyPoseOpLERP(a3_HierarchyPose* pose_out, a3_HierarchyPose const* pose0, a3_HierarchyPose const* pose1, a3real const u);
