@@ -59,7 +59,7 @@ inline a3i32 a3hierarchyPoseReset(const a3_HierarchyPose* pose_inout, const a3ui
 	{
 		for (a3ui32 i = 0; i < nodeCount; ++i)
 		{
-			//(*pose_inout).spatialPose = ???;
+			a3spatialPoseReset(pose_inout);
 		}
 	}
 	return -1;
@@ -82,7 +82,7 @@ inline a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3
 		//for the sake of this, will just use the identity matrix
 		for (a3ui32 i = 0; i < nodeCount; i++)
 		{
-			/*
+			
 			//getting the TRS matrices to multiply, probably not the best method but i cant find anything build already
 			a3mat4 transMat = { 0, 0, 0, 1,
 								0, 0, 1, (*pose_inout).spatialPose[i].position.z,
@@ -118,7 +118,7 @@ inline a3i32 a3hierarchyPoseConvert(const a3_HierarchyPose* pose_inout, const a3
 			a3real4x4Product(posRotMat.m, transMat.m, rotMat.m);
 			//final result of the transform matrix
 			a3real4x4Product((*pose_inout).spatialPose[i].transform.m, posRotMat.m, scaleMat.m);
-			*/
+			
 			
 			//multiplying the transform by the "change" (no change because we just want base pose, so just identity matrix)
 			a3real4x4Product((*pose_inout).spatialPose[i].transform.m,
@@ -147,13 +147,39 @@ inline a3i32 a3hierarchyPoseCopy(const a3_HierarchyPose* pose_out, const a3_Hier
 // For this assignment, implement the 'step' interpolation algorithm, which is effectively just duplication of a single input key pose.  This phase takes key poses to be interpolated and stores the result in the target state's sample pose (for the 'step' function, this just means directly copying the pose from the pool into the state).
 inline a3i32 a3hierarchyPoseLerp(const a3_HierarchyPose* pose_out, const a3_HierarchyPose* pose_from, const a3_HierarchyPose* pose_to, const a3real param, const a3ui32 nodeCount)
 {
-	return -1;
+	if (!pose_out || !pose_from || !pose_to) return -1;
+
+	a3ui32 i;
+	for (i = 0; i < nodeCount; ++i)
+	{
+		// STEP ONLY!! this just copies the pose from the pool
+		// should be changed to lerp later
+		pose_out->spatialPose[i] = pose_to->spatialPose[i];
+	}
+	
+	return 1;
 }
 
 // This phase takes the base pose from the source pool and the sample pose from the state as inputs, and concatenates them into the state's local pose.
 inline a3i32 a3hierarchyPoseConcat(const a3_HierarchyPose* pose_out, const a3_HierarchyPose* base_pose, const a3_HierarchyPose* sample_pose, const a3ui32 nodeCount)
 {
-	return -1;
+	if (!pose_out || !base_pose || !sample_pose) return -1;
+
+	a3ui32 i;
+	for (i = 0; i < nodeCount; ++i)
+	{
+		// this is the principle, but i don't know how to do the actual operations..
+		
+		/*
+		pose_out->spatialPose[i].transform = base_pose->spatialPose->transform + sample_pose->spatialPose->transform;
+		pose_out->spatialPose[i].position = base_pose->spatialPose->position + sample_pose->spatialPose->position;
+		pose_out->spatialPose[i].scale = base_pose->spatialPose->scale + sample_pose->spatialPose->scale;
+		pose_out->spatialPose[i].rotation = base_pose->spatialPose->rotation + sample_pose->spatialPose->rotation;
+		*/
+
+	}
+
+	return 1;
 }
 
 

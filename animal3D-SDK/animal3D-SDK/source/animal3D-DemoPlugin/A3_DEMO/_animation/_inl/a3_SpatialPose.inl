@@ -107,7 +107,10 @@ inline a3i32 a3spatialPoseConvert(a3mat4* mat_out, const a3_SpatialPose* spatial
 {
 	if (mat_out && spatialPose_in)
 	{
+		//spatialPose_in + channel
+		//mat_out = spatialPose_in.
 
+		return 1;
 	}
 	return -1;
 }
