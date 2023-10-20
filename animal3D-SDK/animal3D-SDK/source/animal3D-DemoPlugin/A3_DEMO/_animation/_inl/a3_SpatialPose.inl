@@ -27,7 +27,7 @@
 #ifndef __ANIMAL3D_SPATIALPOSE_INL
 #define __ANIMAL3D_SPATIALPOSE_INL
 
-
+#include <math.h>
 //-----------------------------------------------------------------------------
 
 // set rotation values for a single node pose
@@ -236,7 +236,7 @@ a3_SpatialPose* spatialPoseConstruct(a3_SpatialPose* pose_out, a3vec4 translatio
 
 //Buffer/Copy
 //returns pose_out + 0 / * 1
-a3_SpatialPose* spatialPoseCopy(a3_SpatialPose* pose_out, a3_SpatialPose* toCopy, a3boolean additive)
+a3_SpatialPose* spatialPoseCopy(a3_SpatialPose* pose_out, a3boolean additive)
 {
 	if (additive)
 	{ //additive version
@@ -257,7 +257,7 @@ a3_SpatialPose* spatialPoseCopy(a3_SpatialPose* pose_out, a3_SpatialPose* toCopy
 
 //Negate/Invert
 //returns pose_out * -1 / ^-1
-a3_SpatialPose* spatialPoseInvert(a3_SpatialPose* pose_out, a3_SpatialPose* toInvert, a3boolean additive)
+a3_SpatialPose* spatialPoseInvert(a3_SpatialPose* pose_out, a3boolean additive)
 {
 	if (additive)
 	{ //additive version
@@ -279,40 +279,29 @@ a3_SpatialPose* spatialPoseInvert(a3_SpatialPose* pose_out, a3_SpatialPose* toIn
 //Concatenate / Add
 a3_SpatialPose* spatialPoseAdd(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive)
 {
-	if (additive)
-	{ //additive version
-
-
-
-
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
+	//use a3spatialPoseConcat
 	return pose_out;
 }
 
 //Scale / Mul
 a3_SpatialPose* spatialPoseMul(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive)
 {
-	if (additive)
-	{ //additive version
+	//translation - additive:
+	pose_out->translation.x = leftHand->translation.x * rightHand->translation.x;
+	pose_out->translation.y = leftHand->translation.y * rightHand->translation.y;
+	pose_out->translation.z = leftHand->translation.z * rightHand->translation.z;
 
+	//rotation - additive:
+	pose_out->angles.x = a3trigValid_sind(leftHand->angles.x * rightHand->angles.x);
+	pose_out->angles.y = a3trigValid_sind(leftHand->angles.y * rightHand->angles.y);
+	pose_out->angles.z = a3trigValid_sind(leftHand->angles.z * rightHand->angles.z);
 
+	//scale - multiplicative:
+	pose_out->scale.x = pow(leftHand->scale.x, rightHand->scale.x);
+	pose_out->scale.y = pow(leftHand->scale.y, rightHand->scale.y);
+	pose_out->scale.z = pow(leftHand->scale.z, rightHand->scale.z);
 
-
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
+	
 	return pose_out;
 }
 
@@ -320,45 +309,35 @@ a3_SpatialPose* spatialPoseMul(a3_SpatialPose* pose_out, a3_SpatialPose* leftHan
 //
 a3_SpatialPose* spatialPoseSub(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive)
 {
-	if (additive)
-	{ //additive version
-
-
-
-
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
+	pose_out = spatialPoseMul(pose_out, leftHand, spatialPoseInvert(rightHand, additive), additive);
 	return pose_out;
 }
 
 //De-scale / Div
 a3_SpatialPose* spatialPoseDiv(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive)
 {
-	if (additive)
-	{ //additive version
+	a3_SpatialPose* temp = spatialPoseCopy(rightHand, additive);
+
+	temp->translation.x = pow(temp->translation.x, -1);
+	temp->translation.y = pow(temp->translation.y, -1);
+	temp->translation.z = pow(temp->translation.z, -1);
 
 
+	temp->scale.x = pow(temp->scale.x, -1);
+	temp->scale.y = pow(temp->scale.y, -1);
+	temp->scale.z = pow(temp->scale.z, -1);
 
 
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
+	temp->angles.x = pow(temp->angles.x, -1);
+	temp->angles.y = pow(temp->angles.y, -1);
+	temp->angles.z = pow(temp->angles.z, -1);
+	
+	pose_out = spatialPoseMul(pose_out, leftHand, temp, additive);
 	return pose_out;
 }
 
 //Interpolate
-a3_SpatialPose* spatialPoseLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3real u, a3boolean additive)
+a3_SpatialPose* spatialPoseLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3_SpatialPose* u, a3boolean additive)
 {
 	if (additive)
 	{ //additive version
@@ -378,7 +357,7 @@ a3_SpatialPose* spatialPoseLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHa
 }
 
 //Un-interpolate
-a3_SpatialPose* spatialPoseUnLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3real u, a3boolean additive)
+a3_SpatialPose* spatialPoseUnLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3_SpatialPose* u, a3boolean additive)
 {
 	if (additive)
 	{ //additive version
@@ -398,10 +377,16 @@ a3_SpatialPose* spatialPoseUnLerp(a3_SpatialPose* pose_out, a3_SpatialPose* left
 }
 
 //Integrate
-a3_SpatialPose* spatialPoseIntegrate(a3_SpatialPose* pose_out);
+a3_SpatialPose* spatialPoseIntegrate(a3_SpatialPose* pose_out)
+{
+
+}
 
 //Differentiate
-a3_SpatialPose* spatialPoseDifferentiate(a3_SpatialPose* pose_out);
+a3_SpatialPose* spatialPoseDifferentiate(a3_SpatialPose* pose_out)
+{
+
+}
 
 
 

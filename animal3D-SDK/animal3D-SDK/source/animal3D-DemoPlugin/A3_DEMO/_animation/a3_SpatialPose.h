@@ -157,11 +157,11 @@ a3_SpatialPose* spatialPoseConstruct(a3_SpatialPose* pose_out, a3vec4 translatio
 
 //Buffer/Copy
 //returns pose_out + 0 / * 1
-a3_SpatialPose* spatialPoseCopy(a3_SpatialPose* pose_out, a3_SpatialPose* toCopy, a3boolean additive);
+a3_SpatialPose* spatialPoseCopy(a3_SpatialPose* pose_out, a3boolean additive);
 
 //Negate/Invert
 //returns pose_out * -1 / ^-1
-a3_SpatialPose* spatialPoseInvert(a3_SpatialPose* pose_out, a3_SpatialPose* toInvert, a3boolean additive);
+a3_SpatialPose* spatialPoseInvert(a3_SpatialPose* pose_out, a3boolean additive);
 
 //Concatenate / Add
 a3_SpatialPose* spatialPoseAdd(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive);
@@ -177,10 +177,10 @@ a3_SpatialPose* spatialPoseSub(a3_SpatialPose* pose_out, a3_SpatialPose* leftHan
 a3_SpatialPose* spatialPoseDiv(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive);
 
 //Interpolate
-a3_SpatialPose* spatialPoseLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3real u, a3boolean additive);
+a3_SpatialPose* spatialPoseLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3_SpatialPose* u, a3boolean additive);
 
 //Un-interpolate
-a3_SpatialPose* spatialPoseUnLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3real u, a3boolean additive);
+a3_SpatialPose* spatialPoseUnLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3_SpatialPose* u, a3boolean additive);
 
 //Integrate
 a3_SpatialPose* spatialPoseIntegrate(a3_SpatialPose* pose_out);
