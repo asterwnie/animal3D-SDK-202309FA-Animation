@@ -144,6 +144,49 @@ a3i32 a3spatialPoseLerp(a3_SpatialPose* spatialPose_out, const a3_SpatialPose* s
 
 
 //-----------------------------------------------------------------------------
+//Lab 3 functions (some already exist above):
+
+//bool additive: true = additive, false = multiplicative
+
+//identity
+a3_SpatialPose* spatialPoseIdentity(a3_SpatialPose* pose_out, a3boolean additive);
+
+//Construct
+//creates spatial/hierarchical poses with the given transform
+a3_SpatialPose* spatialPoseConstruct(a3_SpatialPose* pose_out, a3vec4 translation, a3vec4 rotation, a3vec4 scale, a3boolean additive);
+
+//Buffer/Copy
+//returns pose_out + 0 / * 1
+a3_SpatialPose* spatialPoseCopy(a3_SpatialPose* pose_out, a3_SpatialPose* toCopy, a3boolean additive);
+
+//Negate/Invert
+//returns pose_out * -1 / ^-1
+a3_SpatialPose* spatialPoseInvert(a3_SpatialPose* pose_out, a3_SpatialPose* toInvert, a3boolean additive);
+
+//Concatenate / Add
+a3_SpatialPose* spatialPoseAdd(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive);
+
+//Scale / Mul
+a3_SpatialPose* spatialPoseMul(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive);
+
+//Deconcat / Sub
+//
+a3_SpatialPose* spatialPoseSub(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive);
+
+//De-scale / Div
+a3_SpatialPose* spatialPoseDiv(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive);
+
+//Interpolate
+a3_SpatialPose* spatialPoseLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3real u, a3boolean additive);
+
+//Un-interpolate
+a3_SpatialPose* spatialPoseUnLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3real u, a3boolean additive);
+
+//Integrate
+a3_SpatialPose* spatialPoseIntegrate(a3_SpatialPose* pose_out);
+
+//Differentiate
+a3_SpatialPose* spatialPoseDifferentiate(a3_SpatialPose* pose_out);
 
 
 #ifdef __cplusplus

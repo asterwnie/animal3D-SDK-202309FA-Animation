@@ -164,7 +164,82 @@ inline a3i32 a3hierarchyStateUpdateObjectBindToCurrent(const a3_HierarchyState* 
 
 
 //-----------------------------------------------------------------------------
+// //lab 3 functions
+//identity
+a3_HierarchyPose* hPoseIdentity(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3boolean additive)
+{
 
+}
+
+//Construct
+//creates spatial/hierarchical poses with the given transform
+a3_HierarchyPose* hPoseConstruct(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3vec4 translation, a3vec4 rotation, a3vec4 scale, a3boolean additive)
+{
+
+}
+
+//Buffer/Copy
+//returns pose_out + 0 / * 1
+a3_HierarchyPose* hPoseCopy(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* toCopy, a3boolean additive)
+{
+
+}
+
+//Negate/Invert
+//returns pose_out * -1 / ^-1
+a3_HierarchyPose* hPoseInvert(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* toInvert, a3boolean additive)
+{
+
+}
+
+//Concatenate / Add
+a3_HierarchyPose* hPoseAdd(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3boolean additive)
+{
+
+}
+
+//Scale / Mul
+a3_HierarchyPose* hPoseMul(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3boolean additive)
+{
+
+}
+
+//Deconcat / Sub
+//
+a3_HierarchyPose* hPoseSub(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3boolean additive)
+{
+
+}
+
+//De-scale / Div
+a3_HierarchyPose* hPoseDiv(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3boolean additive)
+{
+
+}
+
+//Interpolate
+a3_HierarchyPose* hPoseLerp(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3real u, a3boolean additive)
+{
+
+}
+
+//Un-interpolate
+a3_HierarchyPose* hPoseUnLerp(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3real u, a3boolean additive)
+{
+
+}
+
+//Integrate
+a3_HierarchyPose* hPoseIntegrate(a3_HierarchyPose* pose_out, a3ui32 numNodes)
+{
+
+}
+
+//Differentiate
+a3_HierarchyPose* hPoseDifferentiate(a3_HierarchyPose* pose_out, a3ui32 numNodes)
+{
+
+}
 
 
 //-----------------------------------------------------------------------------
