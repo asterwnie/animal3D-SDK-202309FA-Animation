@@ -194,97 +194,61 @@ inline a3i32 a3spatialPoseLerp(a3_SpatialPose* spatialPose_out, const a3_Spatial
 
 //-----------------------------------------------------------------------------
 //identity
-a3_SpatialPose* spatialPoseIdentity(a3_SpatialPose* pose_out, a3boolean additive)
+a3_SpatialPose* spatialPoseIdentity(a3_SpatialPose* pose_out)
 {
-	if (additive)
-	{ //additive version
-
-
-
-
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
 	return pose_out;
 }
 
 //Construct
 //creates spatial/hierarchical poses with the given transform
-a3_SpatialPose* spatialPoseConstruct(a3_SpatialPose* pose_out, a3vec4 translation, a3vec4 rotation, a3vec4 scale, a3boolean additive)
+a3_SpatialPose* spatialPoseConstruct(a3_SpatialPose* pose_out, a3vec4 translation, a3vec4 rotation, a3vec4 scale)
 {
-	if (additive)
-	{ //additive version
-
-
-
-
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
+	pose_out->translation = translation;
+	pose_out->angles = rotation;
+	pose_out->scale = scale;
 	return pose_out;
 }
 
 //Buffer/Copy
 //returns pose_out + 0 / * 1
-a3_SpatialPose* spatialPoseCopy(a3_SpatialPose* pose_out, a3boolean additive)
+a3_SpatialPose* spatialPoseCopy(a3_SpatialPose* pose_out, a3_SpatialPose* pose_in)
 {
-	if (additive)
-	{ //additive version
-
-
-
-
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
+	//use a3spatialPoseCopy
 	return pose_out;
 }
 
 //Negate/Invert
 //returns pose_out * -1 / ^-1
-a3_SpatialPose* spatialPoseInvert(a3_SpatialPose* pose_out, a3boolean additive)
+a3_SpatialPose* spatialPoseInvert(a3_SpatialPose* pose_out, a3_SpatialPose* pose_in)
 {
-	if (additive)
-	{ //additive version
+	//translation - additive:
+	pose_out->translation.x = pose_in->translation.x * -1;
+	pose_out->translation.y = pose_in->translation.y * -1;
+	pose_out->translation.z = pose_in->translation.z * -1;
+
+	//rotation - additive:
+	pose_out->angles.x = pose_in->angles.x * -1;
+	pose_out->angles.y = pose_in->angles.y * -1;
+	pose_out->angles.z = pose_in->angles.z * -1;
+
+	//scale - multiplicative:
+	pose_out->scale.x = pow(pose_in->scale.x, -1);
+	pose_out->scale.y = pow(pose_in->scale.y, -1);
+	pose_out->scale.z = pow(pose_in->scale.z, -1);
 
 
-
-
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
 	return pose_out;
 }
 
 //Concatenate / Add
-a3_SpatialPose* spatialPoseAdd(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive)
+a3_SpatialPose* spatialPoseAdd(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand)
 {
 	//use a3spatialPoseConcat
 	return pose_out;
 }
 
 //Scale / Mul
-a3_SpatialPose* spatialPoseMul(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive)
+a3_SpatialPose* spatialPoseMul(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand)
 {
 	//translation - additive:
 	pose_out->translation.x = leftHand->translation.x * rightHand->translation.x;
@@ -307,16 +271,18 @@ a3_SpatialPose* spatialPoseMul(a3_SpatialPose* pose_out, a3_SpatialPose* leftHan
 
 //Deconcat / Sub
 //
-a3_SpatialPose* spatialPoseSub(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive)
+a3_SpatialPose* spatialPoseSub(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand)
 {
-	pose_out = spatialPoseMul(pose_out, leftHand, spatialPoseInvert(rightHand, additive), additive);
+	a3_SpatialPose* temp;
+	pose_out = spatialPoseAdd(pose_out, leftHand, spatialPoseInvert(temp, rightHand));
 	return pose_out;
 }
 
 //De-scale / Div
-a3_SpatialPose* spatialPoseDiv(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3boolean additive)
+a3_SpatialPose* spatialPoseDiv(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand)
 {
-	a3_SpatialPose* temp = spatialPoseCopy(rightHand, additive);
+	a3_SpatialPose* temp;
+	a3spatialPoseCopy(temp, rightHand);
 
 	temp->translation.x = pow(temp->translation.x, -1);
 	temp->translation.y = pow(temp->translation.y, -1);
@@ -332,47 +298,22 @@ a3_SpatialPose* spatialPoseDiv(a3_SpatialPose* pose_out, a3_SpatialPose* leftHan
 	temp->angles.y = pow(temp->angles.y, -1);
 	temp->angles.z = pow(temp->angles.z, -1);
 	
-	pose_out = spatialPoseMul(pose_out, leftHand, temp, additive);
+	pose_out = spatialPoseMul(pose_out, leftHand, temp);
 	return pose_out;
 }
 
 //Interpolate
-a3_SpatialPose* spatialPoseLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3_SpatialPose* u, a3boolean additive)
+a3_SpatialPose* spatialPoseLerp(a3_SpatialPose* pose_out, a3_SpatialPose* pose_0, a3_SpatialPose* pose_1, a3real u)
 {
-	if (additive)
-	{ //additive version
+	//use a3spatialPoseLerp
 
-
-
-
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
 	return pose_out;
 }
 
 //Un-interpolate
-a3_SpatialPose* spatialPoseUnLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3_SpatialPose* u, a3boolean additive)
+a3_SpatialPose* spatialPoseUnLerp(a3_SpatialPose* pose_out, a3_SpatialPose* leftHand, a3_SpatialPose* rightHand, a3real u)
 {
-	if (additive)
-	{ //additive version
-
-
-
-
-	}
-	else
-	{ //multiplicative version
-
-
-
-
-	}
+	
 	return pose_out;
 }
 

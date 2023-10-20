@@ -166,78 +166,174 @@ inline a3i32 a3hierarchyStateUpdateObjectBindToCurrent(const a3_HierarchyState* 
 //-----------------------------------------------------------------------------
 // //lab 3 functions
 //identity
-a3_HierarchyPose* hPoseIdentity(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3boolean additive)
+a3_HierarchyPose* hPoseIdentity(a3_HierarchyPose* pose_out, a3ui32 numNodes)
 {
-
+	
+	if (!(pose_out))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+		pose_out->pose[i] = *spatialPoseIdentity(&pose_out->pose[i]);
+	}
 }
 
 //Construct
 //creates spatial/hierarchical poses with the given transform
-a3_HierarchyPose* hPoseConstruct(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3vec4 translation, a3vec4 rotation, a3vec4 scale, a3boolean additive)
+a3_HierarchyPose* hPoseConstruct(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3vec4 translation, a3vec4 rotation, a3vec4 scale)
 {
-
+	if (!(pose_out))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+		pose_out->pose[i] = *spatialPoseConstruct(&pose_out->pose[i], translation, rotation, scale);
+	}
+	return pose_out;
 }
 
 //Buffer/Copy
 //returns pose_out + 0 / * 1
-a3_HierarchyPose* hPoseCopy(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* toCopy, a3boolean additive)
+a3_HierarchyPose* hPoseCopy(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* toCopy)
 {
-
+	if (!(pose_out && toCopy))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+		pose_out->pose[i] = *spatialPoseCopy(&pose_out->pose[i], &toCopy->pose[i]);
+	}
+	return pose_out;
 }
 
 //Negate/Invert
 //returns pose_out * -1 / ^-1
-a3_HierarchyPose* hPoseInvert(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* toInvert, a3boolean additive)
+a3_HierarchyPose* hPoseInvert(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* toInvert)
 {
-
+	if (!(pose_out && toInvert))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+		pose_out->pose[i] = *spatialPoseInvert(&pose_out->pose[i], &toInvert->pose[i]);
+	}
+	return pose_out;
 }
 
 //Concatenate / Add
-a3_HierarchyPose* hPoseAdd(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3boolean additive)
+a3_HierarchyPose* hPoseAdd(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand)
 {
+	if (!(pose_out && leftHand && rightHand))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+		pose_out->pose[i] = *spatialPoseAdd(&pose_out->pose[i], &leftHand->pose[i], &rightHand->pose[i]);
+	}
+	return pose_out;
 
 }
 
 //Scale / Mul
-a3_HierarchyPose* hPoseMul(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3boolean additive)
+a3_HierarchyPose* hPoseMul(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand)
 {
+	if (!(pose_out && leftHand && rightHand))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+		pose_out->pose[i] = *spatialPoseMul(&pose_out->pose[i], &leftHand->pose[i], &rightHand->pose[i]);
+	}
+	return pose_out;
 
 }
 
 //Deconcat / Sub
 //
-a3_HierarchyPose* hPoseSub(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3boolean additive)
+a3_HierarchyPose* hPoseSub(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand)
 {
+	if (!(pose_out && leftHand && rightHand))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+		pose_out->pose[i] = *spatialPoseSub(&pose_out->pose[i], &leftHand->pose[i], &rightHand->pose[i]);
+	}
+	return pose_out;
 
 }
 
 //De-scale / Div
-a3_HierarchyPose* hPoseDiv(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3boolean additive)
+a3_HierarchyPose* hPoseDiv(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand)
 {
+	if (!(pose_out && leftHand && rightHand))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+		pose_out->pose[i] = *spatialPoseDiv(&pose_out->pose[i], &leftHand->pose[i], &rightHand->pose[i]);
+	}
+	return pose_out;
 
 }
 
 //Interpolate
-a3_HierarchyPose* hPoseLerp(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3real u, a3boolean additive)
+a3_HierarchyPose* hPoseLerp(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* hPose_0, a3_HierarchyPose* hPose_1, a3real u)
 {
+	if (!(pose_out && hPose_0 && hPose_1))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+		pose_out->pose[i] = *spatialPoseLerp(&pose_out->pose[i], &hPose_0->pose[i], &hPose_1->pose[i], u);
+	}
+	return pose_out;
 
 }
 
 //Un-interpolate
-a3_HierarchyPose* hPoseUnLerp(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* leftHand, a3_HierarchyPose* rightHand, a3real u, a3boolean additive)
+a3_HierarchyPose* hPoseUnLerp(a3_HierarchyPose* pose_out, a3ui32 numNodes, a3_HierarchyPose* hPose_0, a3_HierarchyPose* hPose_1, a3real u)
 {
+	if (!(pose_out && hPose_0 && hPose_1))
+	{
+		return -1;
+	}
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+
+	}
+	return pose_out;
 
 }
 
 //Integrate
 a3_HierarchyPose* hPoseIntegrate(a3_HierarchyPose* pose_out, a3ui32 numNodes)
 {
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+
+	}
+	return pose_out;
 
 }
 
 //Differentiate
 a3_HierarchyPose* hPoseDifferentiate(a3_HierarchyPose* pose_out, a3ui32 numNodes)
 {
+	for (a3ui32 i = 0; i < numNodes; i++)
+	{
+
+	}
+	return pose_out;
 
 }
 
