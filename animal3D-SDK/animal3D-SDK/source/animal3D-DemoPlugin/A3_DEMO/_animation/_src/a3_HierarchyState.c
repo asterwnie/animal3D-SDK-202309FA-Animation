@@ -248,7 +248,7 @@ a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hiera
 				if (strcmp(value, "NumSegments") == 0)
 				{
 					sscanf(line, "%s %d", value, &numVal);
-					a3hierarchyCreate(hierarchy_out, hierarchy_out->numNodes, 0); // init hierarchy
+					a3hierarchyCreate(hierarchy_out, numVal, 0); // init hierarchy
 				}
 				if (strcmp(value, "NumFrames") == 0)
 				{
@@ -318,11 +318,14 @@ a3i32 a3hierarchyPoseGroupLoadHTR(a3_HierarchyPoseGroup* poseGroup_out, a3_Hiera
 				sscanf(line, "%u %e %e %e %e %e %e %e", &poseIndex, &tx, &ty, &tz, &rx, &ry, &rz, &boneLength);
 
 				a3i32 nodeIndex = a3hierarchyGetNodeIndex(hierarchy_out, attribute);
+				// ***** THIS IS THE PROBLEM LINE - IT KEEPS OUTPUTTING -1!!!!
 
-				a3_SpatialPose* spatialPose = poseGroup_out->hPose[poseIndex].spatialPose + nodeIndex;
-				a3spatialPoseSetTranslation(spatialPose, tx, ty, tz);
-				a3spatialPoseSetRotation(spatialPose, rx, ry, rz);
-
+				if (nodeIndex >= 0)
+				{
+					a3_SpatialPose* spatialPose = poseGroup_out->hPose[poseIndex].spatialPose + nodeIndex;
+					a3spatialPoseSetTranslation(spatialPose, tx, ty, tz);
+					a3spatialPoseSetRotation(spatialPose, rx, ry, rz);
+				}
 				// we don't use bone length, ignore it
 			}
 		}
